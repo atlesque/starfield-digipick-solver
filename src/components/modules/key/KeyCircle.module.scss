@@ -1,0 +1,38 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-contrast);
+  border-radius: var(--border-radius-full);
+  font-size: var(--font-size-h1);
+  aspect-ratio: 1/1;
+  position: relative;
+}
+
+.layerUnknown {
+  border-color: var(--gray-main);
+}
+
+.isOpaque {
+  opacity: 0.25;
+}
+
+.isHidden {
+  display: none;
+}
+
+.layer {
+  border-radius: var(--border-radius-full);
+  border: 4px dashed var(--gray-main);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.layerActive {
+  border-color: var(--gray-light);
+  border-style: solid;
+}

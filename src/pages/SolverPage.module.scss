@@ -1,0 +1,26 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-4);
+  padding-top: var(--spacing-2);
+  max-width: 720px;
+  align-items: flex-start;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: flex-start;
+}
+
+.keyList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: var(--spacing);
+  width: 100%;
+  max-width: 500px;
+}

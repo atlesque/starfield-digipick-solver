@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-half);
+}
+
+.title {
+  font-size: var(--font-size-h6);
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.difficultyList {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-h3);
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.activeDifficulty {
+  color: var(--error-main);
+  outline: 2px solid var(--error-main);
+  padding: 0 var(--spacing);
+}

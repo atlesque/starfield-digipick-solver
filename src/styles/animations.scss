@@ -1,0 +1,24 @@
+:root {
+  --animation-fade-in: fadeIn 200ms ease-out;
+  --animation-modal-bg-fade-in: modalBackgroundFadeIn 125ms ease-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@keyframes modalBackgroundFadeIn {
+  0% {
+    background-color: transparent;
+    backdrop-filter: blur(0);
+  }
+  100% {
+    background-color: var(--background-modal);
+    backdrop-filter: blur(var(--blur-modal));
+  }
+}

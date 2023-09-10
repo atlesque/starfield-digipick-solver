@@ -2,7 +2,12 @@ import { useState } from 'react';
 import { DifficultySelector } from '../components/modules/difficulty/DifficultySelector';
 import { KeyCircle } from '../components/modules/key/KeyCircle';
 import styles from './SolverPage.module.scss';
-import { Difficulty, MAX_KEYS, TOTAL_KEYS_BY_DIFFICULTY } from '../constants';
+import {
+  Difficulty,
+  MAX_KEYS,
+  TOTAL_KEYS_BY_DIFFICULTY,
+  TOTAL_LAYERS_BY_DIFFICULTY,
+} from '../constants';
 import { LayerSelector } from '../components/modules/layer/LayerSelector';
 
 export const SolverPage = () => {
@@ -11,6 +16,7 @@ export const SolverPage = () => {
   const [keyCircles, setKeyCircles] = useState(Array.from({ length: MAX_KEYS }, () => 0));
 
   const totalKeys = TOTAL_KEYS_BY_DIFFICULTY[activeDifficulty];
+  const totalLayers = TOTAL_LAYERS_BY_DIFFICULTY[activeDifficulty];
 
   const handleKeyCircleLayerChange = (keyNumber: number, newLayer: number) => {
     setKeyCircles(keyCircles => {
@@ -29,7 +35,11 @@ export const SolverPage = () => {
       <div className={styles.settings}>
         <DifficultySelector activeDifficulty={activeDifficulty} onChange={setActiveDifficulty} />
         <div className={styles.settingsRow}>
-          <LayerSelector activeLayer={filteredLayer} onChange={setFilteredLayer} />
+          <LayerSelector
+            activeLayer={filteredLayer}
+            totalLayers={totalLayers}
+            onChange={setFilteredLayer}
+          />
           <button className={styles.resetButton} onClick={handleResetClick}>
             Reset
           </button>
@@ -42,6 +52,7 @@ export const SolverPage = () => {
             activeLayerNumber={activeLayer}
             onActiveLayerChange={newLayer => handleKeyCircleLayerChange(i, newLayer)}
             filteredLayer={filteredLayer}
+            totalLayers={totalLayers}
             isHidden={i >= totalKeys}
           />
         ))}

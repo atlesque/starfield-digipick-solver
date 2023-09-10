@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import { TOTAL_LAYERS } from '../../../constants';
 import styles from './KeyCircle.module.scss';
 
 interface KeyCircleProps {
   activeLayerNumber: number;
   filteredLayer?: number;
+  totalLayers: number;
   isHidden?: boolean;
   onActiveLayerChange: (layer: number) => void;
 }
@@ -12,11 +12,12 @@ interface KeyCircleProps {
 export const KeyCircle = ({
   activeLayerNumber,
   filteredLayer = 0,
+  totalLayers,
   isHidden = false,
   onActiveLayerChange,
 }: KeyCircleProps) => {
   const handleClick = () => {
-    onActiveLayerChange((activeLayerNumber + 1) % (TOTAL_LAYERS + 1));
+    onActiveLayerChange((activeLayerNumber + 1) % (totalLayers + 1));
   };
 
   return (
@@ -31,7 +32,7 @@ export const KeyCircle = ({
       <span className={styles.activeLayerNumber}>
         {activeLayerNumber >= 1 ? activeLayerNumber : '-'}
       </span>
-      {Array.from({ length: TOTAL_LAYERS }, (_, i) => (
+      {Array.from({ length: totalLayers }, (_, i) => (
         <div
           key={i}
           className={clsx(styles.layer, {

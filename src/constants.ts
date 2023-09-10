@@ -16,6 +16,15 @@ export const TOTAL_KEYS_BY_DIFFICULTY: TotalKeysByDifficulty = {
   [Difficulty.Master]: 12,
 };
 
-export const TOTAL_LAYERS = 3;
+type TotalLayersByDifficulty = {
+  [key in Difficulty]: number;
+};
+
+export const TOTAL_LAYERS_BY_DIFFICULTY: TotalLayersByDifficulty = {
+  [Difficulty.Novice]: 2,
+  [Difficulty.Advanced]: 2,
+  [Difficulty.Expert]: 3,
+  [Difficulty.Master]: 4,
+};
 
 export const MAX_KEYS = TOTAL_KEYS_BY_DIFFICULTY[Difficulty.Master];

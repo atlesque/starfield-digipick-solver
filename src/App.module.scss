@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     padding: var(--spacing-2);
+    gap: var(--spacing-2);
     background-color: var(--primary-dark);
     background: linear-gradient(0deg, var(--background-main) 0%, var(--background-light) 100%);
     box-sizing: border-box;
-    height: 100vh;
+    min-height: 100vh;
 }

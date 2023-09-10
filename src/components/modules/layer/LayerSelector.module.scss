@@ -1,3 +1,5 @@
+@use '/src/styles/breakpoints.scss';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -17,9 +19,13 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-2);
-  font-size: var(--font-size-h3);
+  font-size: var(--font-size-h5);
   color: var(--text-primary);
   text-transform: uppercase;
+
+  @media (min-width: breakpoints.$sm) {
+    font-size: var(--font-size-h3);
+  }
 }
 
 .activeLayer {

@@ -1,3 +1,5 @@
+@use '/src/styles/breakpoints.scss';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -5,9 +7,14 @@
   gap: var(--spacing-4);
   padding-top: var(--spacing-2);
   max-width: 720px;
-  align-items: flex-start;
+  align-items: center;
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
+
+  @media (min-width: breakpoints.$sm) {
+    width: initial;
+  }
 }
 
 .settings {
@@ -15,6 +22,13 @@
   flex-direction: column;
   gap: var(--spacing-2);
   align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
+
+  @media (min-width: breakpoints.$sm) {
+    width: initial;
+    max-width: initial;
+  }
 }
 
 .settingsRow {
@@ -29,7 +43,11 @@
 .resetButton {
   text-transform: uppercase;
   color: var(--text-primary);
-  font-size: var(--font-size-h3);
+  font-size: var(--font-size-h6);
+
+  @media (min-width: breakpoints.$sm) {
+    font-size: var(--font-size-h3);
+  }
 }
 
 .keyList {

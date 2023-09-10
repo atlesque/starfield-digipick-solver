@@ -28,7 +28,9 @@ export const KeyCircle = ({
       })}
       onClick={handleClick}
     >
-      <span>{activeLayerNumber >= 1 ? activeLayerNumber : '-'}</span>
+      <span className={styles.activeLayerNumber}>
+        {activeLayerNumber >= 1 ? activeLayerNumber : '-'}
+      </span>
       {Array.from({ length: TOTAL_LAYERS }, (_, i) => (
         <div
           key={i}

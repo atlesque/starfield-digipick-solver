@@ -1,3 +1,5 @@
+@use '/src/styles/breakpoints.scss';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -5,9 +7,13 @@
   justify-content: center;
   color: var(--primary-contrast);
   border-radius: var(--border-radius-full);
-  font-size: var(--font-size-h1);
+  font-size: var(--font-size-h5);
   aspect-ratio: 1/1;
   position: relative;
+
+  @media (min-width: breakpoints.$sm) {
+    font-size: var(--font-size-h1);
+  }
 }
 
 .layerUnknown {
@@ -20,6 +26,10 @@
 
 .isHidden {
   display: none;
+}
+
+.activeLayerNumber {
+  line-height: normal;
 }
 
 .layer {

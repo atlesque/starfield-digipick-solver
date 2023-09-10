@@ -8,6 +8,7 @@ import './styles/reset.scss';
 import './styles/shadows.scss';
 import './styles/typography.scss';
 import { SolverPage } from './pages/SolverPage';
+import { Footer } from './components/shared/Footer';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<SolverPage />} />
       </Routes>
+      <Footer />
     </div>
   );
 };

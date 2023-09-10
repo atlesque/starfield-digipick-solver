@@ -7,19 +7,43 @@ import { LayerSelector } from '../components/modules/layer/LayerSelector';
 
 export const SolverPage = () => {
   const [activeDifficulty, setActiveDifficulty] = useState(Difficulty.Novice);
-  const [activeLayer, setActiveLayer] = useState(0);
+  const [filteredLayer, setFilteredLayer] = useState(0);
+  const [keyCircles, setKeyCircles] = useState(Array.from({ length: MAX_KEYS }, () => 0));
 
   const totalKeys = TOTAL_KEYS_BY_DIFFICULTY[activeDifficulty];
+
+  const handleKeyCircleLayerChange = (keyNumber: number, newLayer: number) => {
+    setKeyCircles(keyCircles => {
+      const newKeyCircles = [...keyCircles];
+      newKeyCircles[keyNumber] = newLayer;
+      return newKeyCircles;
+    });
+  };
+
+  const handleResetClick = () => {
+    setKeyCircles(Array.from({ length: MAX_KEYS }, () => 0));
+  };
 
   return (
     <div className={styles.root}>
       <div className={styles.settings}>
         <DifficultySelector activeDifficulty={activeDifficulty} onChange={setActiveDifficulty} />
-        <LayerSelector activeLayer={activeLayer} onChange={setActiveLayer} />
+        <div className={styles.settingsRow}>
+          <LayerSelector activeLayer={filteredLayer} onChange={setFilteredLayer} />
+          <button className={styles.resetButton} onClick={handleResetClick}>
+            Reset
+          </button>
+        </div>
       </div>
       <div className={styles.keyList}>
-        {Array.from({ length: MAX_KEYS }, (_, i) => (
-          <KeyCircle key={i} filteredLayer={activeLayer} isHidden={i >= totalKeys} />
+        {keyCircles.map((activeLayer, i) => (
+          <KeyCircle
+            key={i}
+            activeLayerNumber={activeLayer}
+            onActiveLayerChange={newLayer => handleKeyCircleLayerChange(i, newLayer)}
+            filteredLayer={filteredLayer}
+            isHidden={i >= totalKeys}
+          />
         ))}
       </div>
     </div>

@@ -17,6 +17,21 @@
   align-items: flex-start;
 }
 
+.settingsRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-2);
+  width: 100%;
+}
+
+.resetButton {
+  text-transform: uppercase;
+  color: var(--text-primary);
+  font-size: var(--font-size-h3);
+}
+
 .keyList {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

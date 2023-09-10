@@ -1,18 +1,22 @@
-import { useState } from 'react';
-import styles from './KeyCircle.module.scss';
 import clsx from 'clsx';
 import { TOTAL_LAYERS } from '../../../constants';
+import styles from './KeyCircle.module.scss';
 
 interface KeyCircleProps {
+  activeLayerNumber: number;
   filteredLayer?: number;
   isHidden?: boolean;
+  onActiveLayerChange: (layer: number) => void;
 }
 
-export const KeyCircle = ({ filteredLayer = 0, isHidden = false }: KeyCircleProps) => {
-  const [activeLayerNumber, setActiveLayerNumber] = useState(0);
-
+export const KeyCircle = ({
+  activeLayerNumber,
+  filteredLayer = 0,
+  isHidden = false,
+  onActiveLayerChange,
+}: KeyCircleProps) => {
   const handleClick = () => {
-    setActiveLayerNumber((activeLayerNumber + 1) % (TOTAL_LAYERS + 1));
+    onActiveLayerChange((activeLayerNumber + 1) % (TOTAL_LAYERS + 1));
   };
 
   return (

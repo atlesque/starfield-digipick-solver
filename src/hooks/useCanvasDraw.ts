@@ -7,7 +7,7 @@ export interface DrawOptions {
   rotation: number
 }
 
-export const useCanvasDraw = (canvas: HTMLCanvasElement | null, { prongs, rotation }: DrawOptions) => {
+export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, { prongs, rotation }: DrawOptions) => {
   const prongMap = useMemo(() => {
     const s = new Set<number>();
     prongs.forEach(prong => {
@@ -19,6 +19,7 @@ export const useCanvasDraw = (canvas: HTMLCanvasElement | null, { prongs, rotati
   }, [prongs, rotation]);
 
   const draw = useCallback(() => {
+    const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -32,21 +33,21 @@ export const useCanvasDraw = (canvas: HTMLCanvasElement | null, { prongs, rotati
     const prongWidth = 0.06;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.lineWidth = 7;
-
     // 1-32
     for (let i = 1; i <= MAX_PRONGS; i++) {
       const offset = (i - 1) * prongOffsetSize;
       if (prongMap.has(i)) {
+        ctx.lineWidth = 13;
         ctx.strokeStyle = "white";
       } else {
+        ctx.lineWidth = 7;
         ctx.strokeStyle = "#373a3a";
       }
       ctx.beginPath();
       ctx.arc(x, y, radius, origin - prongWidth + offset, origin + prongWidth + offset);
       ctx.stroke();
     }
-  }, [canvas, prongMap]);
+  }, [canvasRef, prongMap]);
 
   useEffect(() => {
     setTimeout(draw, 0);

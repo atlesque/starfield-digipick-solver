@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Key } from '../components/modules/auto-solver/Key';
 import { Settings } from '../components/modules/settings/Settings';
-import { Difficulty, TOTAL_KEYS_BY_DIFFICULTY } from '../constants';
+import { Difficulty, KEY_PRONG_CONFIGURATIONS, TOTAL_KEYS_BY_DIFFICULTY } from '../constants';
 import styles from './SolverPage.module.scss'
 
 interface Key {
@@ -17,7 +17,7 @@ export const AutoSolverPage = () => {
     setKeys(k => {
       return Array.from<unknown, Key>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, (_, i) => (
         k[i] ?? {
-          prongs: [1, 3, 5],
+          prongs: KEY_PRONG_CONFIGURATIONS[Math.floor(Math.random() * KEY_PRONG_CONFIGURATIONS.length)],
           rotation: 0
         }
       ))
@@ -26,7 +26,7 @@ export const AutoSolverPage = () => {
 
   const onReset = useCallback(() => {
     setKeys(Array.from<unknown, Key>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, () => ({
-      prongs: [],
+      prongs: KEY_PRONG_CONFIGURATIONS[Math.floor(Math.random() * KEY_PRONG_CONFIGURATIONS.length)],
       rotation: 0
     })))
   }, [difficulty]);

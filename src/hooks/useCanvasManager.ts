@@ -5,7 +5,7 @@ export const useCanvasManager = (opts: DrawOptions) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const { draw } = useCanvasDraw(canvasRef.current, opts);
+  const { draw } = useCanvasDraw(canvasRef, opts);
 
   const onResize = useCallback(() => {
     if (!wrapperRef.current || !canvasRef.current) return;
@@ -29,7 +29,7 @@ export const useCanvasManager = (opts: DrawOptions) => {
     const resize = () => requestAnimationFrame(onResize);
     window.addEventListener('resize', resize);
     () => window.removeEventListener('resize', resize);
-  }, [])
+  }, [onResize])
 
   return {
     canvasRef,

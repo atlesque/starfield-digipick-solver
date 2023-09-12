@@ -18,7 +18,7 @@ export const Key: FC<KeyProps> = ({
 
   useEffect(() => {
     setRotation(_rotation);
-  }, [_rotation]);
+  }, [_rotation, prongs]);
 
   const onScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     e.preventDefault();

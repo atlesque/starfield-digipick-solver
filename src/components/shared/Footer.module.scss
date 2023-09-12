@@ -1,6 +1,13 @@
 .root {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   color: var(--text-primary);
+  width: 100%;
+  line-height: normal;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 
   a {
     color: var(--text-primary);

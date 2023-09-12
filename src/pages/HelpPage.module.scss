@@ -1,0 +1,31 @@
+@use '/src/styles/typography.scss';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+  flex: 1;
+}
+
+.header {
+  padding-bottom: var(--spacing);
+  a {
+    @extend .link;
+  }
+}
+
+.howToGuide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+  padding-bottom: var(--spacing-2);
+
+  h1 {
+    font-size: var(--font-size-h2);
+  }
+
+  ul {
+    list-style-type: number;
+    padding-left: var(--spacing-2);
+  }
+}

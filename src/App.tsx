@@ -9,12 +9,15 @@ import './styles/shadows.scss';
 import './styles/typography.scss';
 import { SolverPage } from './pages/SolverPage';
 import { Footer } from './components/shared/Footer';
+import { HelpPage } from './pages/HelpPage';
+import { AppRoutes } from './routes';
 
 const App = () => {
   return (
     <div className={styles.root}>
       <Routes>
-        <Route path="/" element={<SolverPage />} />
+        <Route path={AppRoutes.Home} element={<SolverPage />} />
+        <Route path={AppRoutes.Help} element={<HelpPage />} />
       </Routes>
       <Footer />
     </div>

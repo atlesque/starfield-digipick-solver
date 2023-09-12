@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useLongPress } from 'use-long-press';
 import styles from './KeyCircle.module.scss';
 
 interface KeyCircleProps {
@@ -6,7 +7,9 @@ interface KeyCircleProps {
   filteredLayer?: number;
   totalLayers: number;
   isHidden?: boolean;
+  isVerified?: boolean;
   onActiveLayerChange: (layer: number) => void;
+  onVerifyChange: (isVerified: boolean) => void;
 }
 
 export const KeyCircle = ({
@@ -14,11 +17,20 @@ export const KeyCircle = ({
   filteredLayer = 0,
   totalLayers,
   isHidden = false,
+  isVerified = false,
   onActiveLayerChange,
+  onVerifyChange,
 }: KeyCircleProps) => {
-  const handleClick = () => {
-    onActiveLayerChange((activeLayerNumber + 1) % (totalLayers + 1));
-  };
+  const handleLongPress = useLongPress(
+    () => {
+      onVerifyChange(!isVerified);
+    },
+    {
+      onCancel: () => {
+        onActiveLayerChange((activeLayerNumber + 1) % (totalLayers + 1));
+      },
+    }
+  );
 
   return (
     <button
@@ -26,8 +38,9 @@ export const KeyCircle = ({
         [styles.layerUnknown]: activeLayerNumber === 0,
         [styles.isOpaque]: filteredLayer !== activeLayerNumber && filteredLayer !== 0,
         [styles.isHidden]: isHidden,
+        [styles.isVerified]: isVerified,
       })}
-      onClick={handleClick}
+      {...handleLongPress()}
     >
       <span className={styles.activeLayerNumber}>
         {activeLayerNumber >= 1 ? activeLayerNumber : '-'}

@@ -24,7 +24,7 @@ body {
   font-family: 'Nunito', sans-serif;
   line-height: 1.75;
   font-weight: var(--font-weight-regular);
-  color: var(--text-main);
+  color: var(--text-primary);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -42,10 +42,10 @@ small {
   font-size: var(--font-size-small);
 }
 
-.a {
+.link {
   font-weight: var(--font-weight-bold);
-  color: var(--primary-main);
-  text-decoration: inherit;
+  color: var(--text-secondary);
+  text-decoration: underline;
 
   &:hover {
     color: var(--primary-light);

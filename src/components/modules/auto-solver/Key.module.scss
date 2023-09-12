@@ -7,6 +7,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   cursor: pointer;
+  transition: all 0.1s linear;
+
+  &:hover {
+    background-color: rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.25);
+  }
+}
+
+.warning {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: #9b0707;
+  transition: all 0.1s linear;
+
+  &:hover {
+    font-size: 3rem;
+  }
 }

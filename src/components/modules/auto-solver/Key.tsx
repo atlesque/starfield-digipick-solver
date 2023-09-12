@@ -7,11 +7,13 @@ interface KeyProps {
   prongs?: number[]
   inverted?: boolean
   rotation?: number
+  onClick?: (prongs: number[]) => void
 }
 export const Key: FC<KeyProps> = ({
   prongs = [],
   inverted = false,
-  rotation: _rotation = 0
+  rotation: _rotation = 0,
+  onClick
 }) => {
   const [rotation, setRotation] = useState(_rotation);
   const { canvasRef, wrapperRef } = useCanvasManager({ prongs, inverted, rotation });
@@ -37,8 +39,13 @@ export const Key: FC<KeyProps> = ({
   }, [])
 
   return (
-    <div ref={wrapperRef} onWheel={onWheel} onScroll={onScroll} className={styles.root}>
-      <canvas width="0" height="0" ref={canvasRef} />
+    <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} onWheel={onWheel} onScroll={onScroll} className={styles.root}>
+      <canvas ref={canvasRef} />
+      {!prongs.length && (
+        <div className={styles.warning}>
+          <span>!</span>
+        </div>
+      )}
     </div>
   )
 }

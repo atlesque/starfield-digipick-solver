@@ -2,21 +2,22 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import styles from './Key.module.scss'
 import { useCanvasManager } from '../../../hooks/useCanvasManager'
 import { MAX_PRONGS } from '../../../constants'
+import { Puzzle } from '../../../types/Puzzle'
 
 interface KeyProps {
   prongs?: number[]
-  inverted?: boolean
+  puzzle?: Puzzle
   rotation?: number
   onClick?: (prongs: number[]) => void
 }
 export const Key: FC<KeyProps> = ({
   prongs = [],
-  inverted = false,
+  puzzle,
   rotation: _rotation = 0,
   onClick
 }) => {
   const [rotation, setRotation] = useState(_rotation);
-  const { canvasRef, wrapperRef } = useCanvasManager({ prongs, inverted, rotation });
+  const { canvasRef, wrapperRef } = useCanvasManager({ prongs, puzzle, rotation });
 
   useEffect(() => {
     setRotation(_rotation);
@@ -41,7 +42,7 @@ export const Key: FC<KeyProps> = ({
   return (
     <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} onWheel={onWheel} onScroll={onScroll} className={styles.root}>
       <canvas ref={canvasRef} />
-      {!prongs.length && (
+      {!prongs.length && !puzzle && (
         <div className={styles.warning}>
           <span>!</span>
         </div>

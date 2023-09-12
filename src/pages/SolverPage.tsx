@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { DifficultySelector } from '../components/modules/difficulty/DifficultySelector';
 import { KeyCircle } from '../components/modules/key/KeyCircle';
-import { LayerSelector } from '../components/modules/layer/LayerSelector';
 import {
   Difficulty,
   MAX_KEYS,
@@ -9,6 +7,8 @@ import {
   TOTAL_LAYERS_BY_DIFFICULTY,
 } from '../constants';
 import styles from './SolverPage.module.scss';
+import { Settings } from '../components/modules/settings/Settings';
+import { Link } from 'react-router-dom';
 
 interface KeyCircleConfig {
   activeLayerNumber: number;
@@ -32,6 +32,7 @@ export const SolverPage = () => {
 
   const handleResetClick = () => {
     setKeyCircles(DEFAULT_KEY_CIRCLES);
+    setFilteredLayer(0);
   };
 
   const handleKeyCircleLayerChange = (keyNumber: number, newLayer: number) => {
@@ -58,19 +59,14 @@ export const SolverPage = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.settings}>
-        <DifficultySelector activeDifficulty={activeDifficulty} onChange={setActiveDifficulty} />
-        <div className={styles.settingsRow}>
-          <LayerSelector
-            activeLayer={filteredLayer}
-            totalLayers={totalLayers}
-            onChange={setFilteredLayer}
-          />
-          <button className={styles.resetButton} onClick={handleResetClick}>
-            Reset
-          </button>
-        </div>
-      </div>
+      <Settings
+        activeDifficulty={activeDifficulty}
+        handleResetClick={handleResetClick}
+        setActiveDifficulty={setActiveDifficulty}
+        filteredLayer={filteredLayer}
+        setFilteredLayer={setFilteredLayer}
+        totalLayers={totalLayers}
+      />
       <div className={styles.keyList}>
         {keyCircles.map((keyCircleConfig, i) => (
           <KeyCircle
@@ -84,6 +80,10 @@ export const SolverPage = () => {
             onVerifyChange={isVerified => handleKeyCircleVerifyChange(i, isVerified)}
           />
         ))}
+      </div>
+      <div style={{ width: '100%' }}>
+        <h1 className={styles.title}>Auto Solver</h1>
+        <Link to="/auto-solver">Try the new auto solver!</Link>
       </div>
     </div>
   );

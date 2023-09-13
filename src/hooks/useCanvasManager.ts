@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { DrawOptions, useCanvasDraw } from './useCanvasDraw';
+import { useCanvasEdit } from './useCanvasEdit';
 
 export const useCanvasManager = (opts: DrawOptions) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const { draw } = useCanvasDraw(canvasRef, opts);
+  useCanvasEdit(canvasRef, opts.puzzle, opts.setPuzzle);
 
   const onResize = useCallback(() => {
     if (!wrapperRef.current || !canvasRef.current) return;

@@ -23,8 +23,7 @@ export const AutoSolverPage = () => {
         }
       ))
     })
-    setPuzzle({ layers: [[5, 10, 15, 20], [1, 3], [1, 19]] })
-    // setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
+    setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
   }, [difficulty]);
 
   const onReset = useCallback(() => {
@@ -32,8 +31,7 @@ export const AutoSolverPage = () => {
       prongs: [],
       rotation: 0
     })))
-    setPuzzle({ layers: [[5, 10, 15, 20], [1, 3], [1, 19]] })
-    // setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
+    setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
   }, [difficulty]);
 
   return (

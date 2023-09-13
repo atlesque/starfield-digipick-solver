@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { SetStateAction, useCallback, useEffect, useMemo } from 'react'
 import { MAX_PRONGS } from '../constants'
 import { Puzzle } from '../types/Puzzle'
 
 export interface DrawOptions {
   prongs: number[]
   puzzle?: Puzzle
+  setPuzzle?: React.Dispatch<SetStateAction<Puzzle>>
   rotation: number
 }
 

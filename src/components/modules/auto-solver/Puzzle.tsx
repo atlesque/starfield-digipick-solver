@@ -6,11 +6,12 @@ interface PuzzleProps {
   puzzle: IPuzzle
   setPuzzle: React.Dispatch<React.SetStateAction<IPuzzle>>
 }
-export const Puzzle = ({ puzzle }: PuzzleProps) => {
+export const Puzzle = ({ puzzle, setPuzzle }: PuzzleProps) => {
   return (
     <div className={styles.puzzle}>
       <Key
         puzzle={puzzle}
+        setPuzzle={setPuzzle}
       />
     </div>
   );

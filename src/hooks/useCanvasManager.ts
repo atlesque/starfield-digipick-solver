@@ -7,7 +7,7 @@ export const useCanvasManager = (opts: DrawOptions) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const { draw } = useCanvasDraw(canvasRef, opts);
-  useCanvasEdit(canvasRef, opts.puzzle, opts.setPuzzle);
+  useCanvasEdit(canvasRef, opts.isPuzzle);
 
   const onResize = useCallback(() => {
     if (!wrapperRef.current || !canvasRef.current) return;

@@ -1,38 +1,20 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Key } from '../components/modules/auto-solver/Key';
-import { DigiKey } from '../types/DigiKey'
 import { Settings } from '../components/modules/settings/Settings';
-import { Difficulty, TOTAL_KEYS_BY_DIFFICULTY, TOTAL_LAYERS_BY_DIFFICULTY } from '../constants';
 import styles from './SolverPage.module.scss'
 import { KeyPicker } from '../components/modules/auto-solver/KeyPicker';
 import { Puzzle } from '../components/modules/auto-solver/Puzzle';
-import { Puzzle as IPuzzle } from '../types/Puzzle';
+import { useAutoSolver } from '../hooks/useAutoSolver';
 
 export const AutoSolverPage = () => {
-  const [difficulty, setDifficulty] = useState(Difficulty.Novice);
-  const [keys, setKeys] = useState<DigiKey[]>([]);
-  const [puzzle, setPuzzle] = useState<IPuzzle>({ layers: [] });
-  const [editKey, setEditKey] = useState(-1);
-
-  useEffect(() => {
-    setKeys(k => {
-      return Array.from<unknown, DigiKey>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, (_, i) => (
-        k[i] ?? {
-          prongs: [],
-          rotation: 0
-        }
-      ))
-    })
-    setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
-  }, [difficulty]);
-
-  const onReset = useCallback(() => {
-    setKeys(Array.from<unknown, DigiKey>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, () => ({
-      prongs: [],
-      rotation: 0
-    })))
-    setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
-  }, [difficulty]);
+  const {
+    difficulty,
+    setDifficulty,
+    onReset,
+    editKey,
+    setEditKey,
+    keys,
+    setKeys
+  } = useAutoSolver();
 
   return (
     <div className={styles.root}>
@@ -43,10 +25,7 @@ export const AutoSolverPage = () => {
       />
       {editKey === -1 ? (
         <>
-          <Puzzle
-            puzzle={puzzle}
-            setPuzzle={setPuzzle}
-          />
+          <Puzzle />
           <div className={styles.keyList}>
             {keys.map((k, i) => (
               <Key

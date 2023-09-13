@@ -1,15 +1,20 @@
-import { SetStateAction, useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { MAX_PRONGS } from '../constants'
-import { Puzzle } from '../types/Puzzle'
+import { useAutoSolver } from './useAutoSolver'
 
 export interface DrawOptions {
   prongs: number[]
-  puzzle?: Puzzle
-  setPuzzle?: React.Dispatch<SetStateAction<Puzzle>>
+  isPuzzle?: boolean
   rotation: number
 }
 
-export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, { prongs, rotation, puzzle }: DrawOptions) => {
+export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
+  prongs,
+  rotation,
+  isPuzzle
+}: DrawOptions) => {
+  const { puzzle } = useAutoSolver();
+
   const prongMap = useMemo(() => {
     const s = new Set<number>();
     prongs.forEach(prong => {
@@ -32,7 +37,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, { p
     const PI = Math.PI;
     const origin = -0.5 * PI;
     const prongOffsetSize = 2 * PI / MAX_PRONGS;
-    const prongWidth = puzzle ? 0.08 : 0.06;
+    const prongWidth = isPuzzle ? 0.08 : 0.06;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const renderProngs = (prongs: Set<number>, depth: number = 0) => {
@@ -41,10 +46,10 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, { p
         const offset = (i - 1) * prongOffsetSize;
         if (prongs.has(i)) {
           ctx.lineWidth = 13;
-          ctx.strokeStyle = puzzle ? '#373a3a' : "white";
+          ctx.strokeStyle = isPuzzle ? '#373a3a' : "white";
         } else {
-          ctx.lineWidth = puzzle ? 13 : 7;
-          ctx.strokeStyle = puzzle ? 'white' : "#373a3a";
+          ctx.lineWidth = isPuzzle ? 13 : 7;
+          ctx.strokeStyle = isPuzzle ? 'white' : "#373a3a";
         }
         ctx.beginPath();
         ctx.arc(x, y, radius - (depth * 20), origin - prongWidth + offset, origin + prongWidth + offset);
@@ -52,7 +57,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, { p
       }
     }
     
-    if (!puzzle) {
+    if (!isPuzzle) {
       renderProngs(prongMap);
     } else {
       puzzle.layers.forEach((layer, i) => {
@@ -61,7 +66,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, { p
         renderProngs(set, i);
       })
     }
-  }, [canvasRef, prongMap, puzzle]);
+  }, [canvasRef, prongMap, isPuzzle, puzzle]);
 
   useEffect(() => {
     draw();

@@ -1,24 +1,25 @@
-import { FC, SetStateAction, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styles from './Key.module.scss'
 import { useCanvasManager } from '../../../hooks/useCanvasManager'
-import { Puzzle } from '../../../types/Puzzle'
 
 interface KeyProps {
   prongs?: number[]
-  puzzle?: Puzzle
-  setPuzzle?: React.Dispatch<SetStateAction<Puzzle>>
+  isPuzzle?: boolean
   rotation?: number
   onClick?: (prongs: number[]) => void
 }
 export const Key: FC<KeyProps> = ({
   prongs = [],
-  puzzle,
-  setPuzzle,
+  isPuzzle = false,
   rotation: _rotation = 0,
   onClick
 }) => {
   const [rotation, setRotation] = useState(_rotation);
-  const { canvasRef, wrapperRef } = useCanvasManager({ prongs, puzzle, setPuzzle, rotation });
+  const { canvasRef, wrapperRef } = useCanvasManager({
+    prongs,
+    isPuzzle,
+    rotation
+  });
 
   useEffect(() => {
     setRotation(_rotation);
@@ -27,7 +28,7 @@ export const Key: FC<KeyProps> = ({
   return (
     <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} className={styles.root}>
       <canvas ref={canvasRef} />
-      {!prongs.length && !puzzle && (
+      {!prongs.length && !isPuzzle && (
         <div className={styles.warning}>
           <span>!</span>
         </div>

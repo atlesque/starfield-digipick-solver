@@ -1,9 +1,10 @@
-import { RefObject, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import update from 'immutability-helper';
 import { useCanvasEventTransformers } from './useCanvasEventTransformers';
-import { Puzzle } from '../types/Puzzle';
+import { useAutoSolver } from './useAutoSolver';
 
-export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, puzzle?: Puzzle, setPuzzle?: React.Dispatch<SetStateAction<Puzzle>>) => {
+export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, isPuzzle: boolean = false) => {
+  const { puzzle, setPuzzle } = useAutoSolver();
   // backup copy
   const [p, setP] = useState(puzzle!);
   const editingRef = useRef(false);
@@ -43,5 +44,5 @@ export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, puzzle?: 
     }
   }, [p])
 
-  useCanvasEventTransformers(canvasRef, !!puzzle, onPick, onPicking)
+  useCanvasEventTransformers(canvasRef, isPuzzle, onPick, onPicking)
 }

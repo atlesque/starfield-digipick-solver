@@ -5,25 +5,19 @@ import { useAutoSolver } from './useAutoSolver'
 export interface DrawOptions {
   prongs: number[]
   isPuzzle?: boolean
-  rotation: number
 }
 
 export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
   prongs,
-  rotation,
   isPuzzle
 }: DrawOptions) => {
   const { puzzle } = useAutoSolver();
 
   const prongMap = useMemo(() => {
     const s = new Set<number>();
-    prongs.forEach(prong => {
-      // turn prong into index, add rotation, mod by max prongs,
-      // then convert back to non-index. (+/- 1)
-      s.add(((prong - 1 + rotation) % (MAX_PRONGS)) + 1)
-    })
+    prongs.forEach(prong => s.add(prong))
     return s;
-  }, [prongs, rotation]);
+  }, [prongs]);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;

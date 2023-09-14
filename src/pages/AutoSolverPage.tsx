@@ -1,9 +1,11 @@
-import { Key } from '../components/modules/auto-solver/Key';
+import { Key } from '../components/modules/autoSolver/Key';
 import { Settings } from '../components/modules/settings/Settings';
 import styles from './SolverPage.module.scss'
-import { KeyPicker } from '../components/modules/auto-solver/KeyPicker';
-import { Puzzle } from '../components/modules/auto-solver/Puzzle';
+import { KeyPicker } from '../components/modules/autoSolver/KeyPicker';
+import { Puzzle } from '../components/modules/autoSolver/Puzzle';
 import { useAutoSolver } from '../hooks/useAutoSolver';
+import { Button } from '../components/modules/button/Button';
+import { ErrorMessage } from '../components/modules/errorMessage/ErrorMessage';
 
 export const AutoSolverPage = () => {
   const {
@@ -13,7 +15,10 @@ export const AutoSolverPage = () => {
     editKey,
     setEditKey,
     keys,
-    setKeys
+    setKeys,
+    onSolve,
+    solved,
+    error
   } = useAutoSolver();
 
   return (
@@ -26,12 +31,14 @@ export const AutoSolverPage = () => {
       {editKey === -1 ? (
         <>
           <Puzzle />
+          {error && (<ErrorMessage>{error}</ErrorMessage>)}
+          <Button primary disabled={solved} onClick={onSolve}>Solve Puzzle</Button>
           <div className={styles.keyList}>
             {keys.map((k, i) => (
               <Key
                 key={i}
                 prongs={k.prongs}
-                rotation={k.rotation}
+                layer={k.layer}
                 onClick={() => setEditKey(i)}
               />
             ))}

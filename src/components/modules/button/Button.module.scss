@@ -1,0 +1,23 @@
+.button {
+  font-size: var(--font-size-h1);
+  background-color: rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,0,0,0.3);
+  padding: 0 16px;
+  margin: 6px 0;
+  border-radius: 4px;
+  transition: all 0.1s linear;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0,0,0,0.4);
+  }
+}
+
+.green {
+  color: var(--white-main);
+  background-color: var(--secondary-main);
+
+  &:hover {
+    background-color: var(--secondary-dark);
+  }
+}

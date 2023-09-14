@@ -4,6 +4,7 @@ import { DigiKey } from '../../../types/DigiKey';
 import { Key } from './Key';
 import styles from './KeyPicker.module.scss'
 import clsx from 'clsx';
+import { Button } from '../button/Button';
 
 interface KeyPickerProps {
   keys: DigiKey[]
@@ -27,7 +28,7 @@ export const KeyPicker: FC<KeyPickerProps> = ({
           })} />
         ))}
       </div>
-      <button onClick={() => setActiveIndex(-1)} className={styles.button}>FINISH</button>
+      <Button onClick={() => setActiveIndex(-1)}>BACK</Button>
       <div className={styles.keys}>
         {KEY_PRONG_CONFIGURATIONS.map((prongs, i) => (
           <Key
@@ -36,7 +37,7 @@ export const KeyPicker: FC<KeyPickerProps> = ({
             onClick={(prongs) => {
               setKeys(k => {
                 const newKeys = [...k];
-                newKeys.splice(activeIndex, 1, { prongs, rotation: 0 });
+                newKeys.splice(activeIndex, 1, { prongs });
                 return newKeys;
               })
               const nextIndex = activeIndex + 1;

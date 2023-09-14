@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { DifficultySelector } from '../difficulty/DifficultySelector'
 import styles from './Settings.module.scss'
 import { Difficulty } from '../../../constants'
@@ -12,14 +12,14 @@ interface SettingsProps {
   totalLayers?: number
   setFilteredLayer?: (layer: number) => void
 }
-export const Settings: FC<SettingsProps> = ({
+export const Settings = ({
   activeDifficulty,
   handleResetClick,
   setActiveDifficulty,
   filteredLayer,
   setFilteredLayer,
   totalLayers
-}) => {
+}: SettingsProps) => {
   return (
     <div className={styles.settings}>
       <DifficultySelector activeDifficulty={activeDifficulty} onChange={setActiveDifficulty} />

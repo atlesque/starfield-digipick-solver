@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { KEY_PRONG_CONFIGURATIONS } from '../../../constants';
 import { DigiKey } from '../../../types/DigiKey';
 import { Key } from './Key';
@@ -12,12 +11,12 @@ interface KeyPickerProps {
   setActiveIndex: (i: number) => void
   setKeys: React.Dispatch<React.SetStateAction<DigiKey[]>>
 }
-export const KeyPicker: FC<KeyPickerProps> = ({
+export const KeyPicker = ({
   keys,
   activeIndex,
   setActiveIndex,
   setKeys
-}) => {
+}: KeyPickerProps) => {
   return (
     <div className={styles.root}>
       <div className={styles.status}>

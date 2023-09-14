@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import styles from './Key.module.scss'
 import { useCanvasManager } from '../../../hooks/useCanvasManager'
 import clsx from 'clsx'
@@ -10,13 +9,13 @@ interface KeyProps {
   rotation?: number
   onClick?: (prongs: number[]) => void
 }
-export const Key: FC<KeyProps> = ({
+export const Key = ({
   prongs = [],
   isPuzzle = false,
   rotation: _rotation = 0,
   layer,
   onClick
-}) => {
+}: KeyProps) => {
   const { canvasRef, wrapperRef } = useCanvasManager({
     prongs,
     isPuzzle,

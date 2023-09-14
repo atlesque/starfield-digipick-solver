@@ -81,7 +81,7 @@ export const SolverPage = () => {
           />
         ))}
       </div>
-      <div style={{ width: '100%' }}>
+      <div className={styles.autoSolver}>
         <h1 className={styles.title}>Auto Solver</h1>
         <Link to="/auto-solver">Try the new auto solver!</Link>
       </div>

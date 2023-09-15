@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { MAX_PRONGS } from '../constants'
 import { useAutoSolver } from './useAutoSolver'
+import { COLOR_NO_PRONG, COLOR_PRONG, COLOR_PUZZLE_NO_PRONG, COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE, COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE, COLOR_PUZZLE_PRONG } from '../styles/palette'
 
 export interface DrawOptions {
   prongs: number[]
@@ -11,7 +12,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
   prongs,
   isPuzzle
 }: DrawOptions) => {
-  const { puzzle } = useAutoSolver();
+  const { puzzle, solved, activeLayer } = useAutoSolver();
 
   const prongMap = useMemo(() => {
     const s = new Set<number>();
@@ -40,10 +41,28 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         const offset = (i - 1) * prongOffsetSize;
         if (prongs.has(i)) {
           ctx.lineWidth = 13;
-          ctx.strokeStyle = isPuzzle ? '#373a3a' : "white";
+          ctx.strokeStyle = (() => {
+            if (isPuzzle) return COLOR_PUZZLE_PRONG;
+
+            return COLOR_PRONG;
+          })()
         } else {
           ctx.lineWidth = isPuzzle ? 13 : 7;
-          ctx.strokeStyle = isPuzzle ? 'white' : "#373a3a";
+          ctx.strokeStyle = (() => {
+            if (isPuzzle && !solved && activeLayer === (depth + 1).toString()) {
+              return COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE;
+            }
+
+            if (isPuzzle && !solved && activeLayer && activeLayer !== (depth + 1).toString()) {
+              return COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE;
+            }
+
+            if (isPuzzle) {
+              return COLOR_PUZZLE_NO_PRONG;
+            }
+
+            return COLOR_NO_PRONG;
+          })();
         }
         ctx.beginPath();
         ctx.arc(x, y, radius - (depth * 20), origin - prongWidth + offset, origin + prongWidth + offset);
@@ -60,7 +79,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         renderProngs(set, i);
       })
     }
-  }, [canvasRef, prongMap, isPuzzle, puzzle]);
+  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer]);
 
   useEffect(() => {
     draw();

@@ -18,7 +18,8 @@ export const AutoSolverPage = () => {
     onSolve,
     solved,
     error,
-    setActiveLayer
+    puzzle,
+    setActiveLayer,
   } = useAutoSolver();
 
   return (
@@ -33,7 +34,11 @@ export const AutoSolverPage = () => {
         <>
           <Puzzle />
           {error && (<ErrorMessage>{error}</ErrorMessage>)}
-          <Button primary={!solved} disabled={solved} onClick={solved ? onReset : onSolve}>{solved ? 'Start Over' : 'Solve Puzzle'}</Button>
+          <div>
+            {!solved && <Button primary onClick={() => setActiveLayer(l => (l === '1' || !l) ? '' : (Number(l) - 1).toString())}>&lt;</Button>}
+            <Button primary={!solved} disabled={solved} onClick={solved ? onReset : onSolve}>{solved ? 'Start Over' : 'Solve Puzzle'}</Button>
+            {!solved && <Button primary onClick={() => setActiveLayer(l => !l ? '1' : (Math.min(Number(l) + 1, puzzle.layers.length)).toString())}>&gt;</Button>}
+          </div>
           <div className={styles.keyList}>
             {keys.map((k, i) => (
               <Key

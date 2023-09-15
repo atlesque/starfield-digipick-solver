@@ -1,7 +1,7 @@
 import { MAX_PRONGS } from '../constants';
 
 // Thanks ChatGPT!
-export const getProngNumber = (x: number, y: number, center: number) => {
+export const getProngNumber = (x: number, y: number, center: number, activeLayer: string) => {
   const angle_rad = Math.atan2(y - center, x - center);
 
   // Convert the angle to degrees if needed
@@ -20,8 +20,8 @@ export const getProngNumber = (x: number, y: number, center: number) => {
   // Calculate the layer number
   let layerNumber = Math.floor(((center) - radius) / 20);
 
-  // Ensure that the layerNumber is within the range 0-2
+  // Ensure that the layerNumber is within the range 0-layers
   layerNumber = Math.min(4, Math.max(0, layerNumber));
 
-  return [notch_number, layerNumber].join(':')
+  return [notch_number, activeLayer ? Number(activeLayer) - 1 : layerNumber].join(':')
 }

@@ -1,5 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { getProngNumber } from '../utils/getProngNumber';
+import { useAutoSolver } from './useAutoSolver';
 
 export const useCanvasEventTransformers = (
   canvasRef: RefObject<HTMLCanvasElement>,
@@ -10,6 +11,7 @@ export const useCanvasEventTransformers = (
 ) => {
   // prong:layer
   const [prong, setProng] = useState('-1:-1');
+  const { activeLayer } = useAutoSolver();
   const prongRef = useRef(prong);
   prongRef.current = prong;
 
@@ -28,14 +30,14 @@ export const useCanvasEventTransformers = (
   const onStart = useCallback((x: number, y: number) => {
     if (!canvasRef.current) return;
     const center = canvasRef.current.width / 2;
-    setProng(() => getProngNumber(x, y, center));
-  }, [])
+    setProng(() => getProngNumber(x, y, center, activeLayer));
+  }, [activeLayer])
 
   const onMove = useCallback((x: number, y: number) => {
     if (!canvasRef.current) return;
     const center = canvasRef.current.width / 2;
-    setProng(() => getProngNumber(x, y, center));
-  }, [])
+    setProng(() => getProngNumber(x, y, center, activeLayer));
+  }, [activeLayer])
 
   const onAbort = useCallback(() => {
     setProng('-1:-1');

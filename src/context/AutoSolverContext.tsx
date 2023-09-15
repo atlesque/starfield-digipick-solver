@@ -97,6 +97,7 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
 
       try {
         setKeys(solvePuzzle(puzzle, keys));
+        setActiveLayer('');
         setSolved(true);
       } catch (e) {
         throw new Error('This puzzle is not solveable. Ensure you have entered everything correctly!');

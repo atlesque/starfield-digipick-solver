@@ -28,6 +28,7 @@ export const AutoSolverPage = () => {
         setActiveDifficulty={setDifficulty}
         handleResetClick={onReset}
       />
+      <i>Disclaimer: Better mobile support and easier key entry coming soon!</i>
       {editKey === -1 ? (
         <>
           <Puzzle />

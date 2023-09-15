@@ -104,7 +104,7 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
     if (!error) {
       return;
     }
-    const timeout = setTimeout(() => setError(undefined), 6000);
+    const timeout = setTimeout(() => setError(''), 6000);
     return () => clearTimeout(timeout);
   }, [error]);
 

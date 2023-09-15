@@ -45,6 +45,14 @@
   }
 }
 
+.hidden {
+  opacity: 25%;
+}
+
+.unused {
+  opacity: 10%;
+}
+
 .success {
   color: var(--white-main);
 }

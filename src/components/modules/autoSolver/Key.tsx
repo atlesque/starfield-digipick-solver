@@ -1,6 +1,7 @@
 import styles from './Key.module.scss'
 import { useCanvasManager } from '../../../hooks/useCanvasManager'
 import clsx from 'clsx'
+import { useAutoSolver } from '../../../hooks/useAutoSolver'
 
 interface KeyProps {
   prongs?: number[]
@@ -20,12 +21,16 @@ export const Key = ({
 }: KeyProps) => {
   const { canvasRef, wrapperRef } = useCanvasManager({
     prongs,
-    isPuzzle,
+    isPuzzle
   });
+
+  const { activeLayer, solved } = useAutoSolver();
 
   return (
     <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} className={clsx(styles.root, {
-      [styles.active]: active
+      [styles.active]: active,
+      [styles.hidden]: !isPuzzle && solved && !!activeLayer && activeLayer !== layer,
+      [styles.unused]: !isPuzzle && solved && activeLayer !== 'X' && layer === 'X'
     })}>
       <canvas ref={canvasRef} />
       {!prongs.length && !isPuzzle && (

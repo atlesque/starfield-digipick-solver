@@ -17,6 +17,8 @@ interface AutoSolverContextValue {
   onSolve: () => void
   solved: boolean
   error?: string
+  activeLayer: string
+  setActiveLayer: Dispatch<SetStateAction<string>>
 }
 
 export const AutoSolverContext = createContext<AutoSolverContextValue>(null!);
@@ -35,6 +37,7 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
   const [error, setError] = useState<string>(saved.error ?? undefined);
   const [puzzle, setPuzzle] = useState<Puzzle>(saved.puzzle ?? { layers: [] });
   const [editKey, setEditKey] = useState<number>(saved.editKey ?? -1);
+  const [activeLayer, setActiveLayer] = useState(saved.activeLayer ?? '');
 
   useEffect(() => {
     localStorage.setItem('save', JSON.stringify({
@@ -43,9 +46,10 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
       solved,
       error,
       puzzle,
-      editKey
+      editKey,
+      activeLayer
     }))
-  }, [difficulty, keys, solved, error, puzzle, editKey]);
+  }, [difficulty, keys, solved, error, puzzle, editKey, activeLayer]);
 
   useEffect(() => {
     setKeys(k => {
@@ -69,13 +73,16 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
     };
   }, [puzzle, keys])
 
-  const onReset = useCallback(() => {
+  const onReset = useCallback((ask?: boolean) => {
+    const ok = confirm('Are you sure you want to reset?');
+    if (!ok) return;
     setKeys(Array.from<unknown, DigiKey>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, () => ({
       prongs: [],
       rotation: 0
     })))
     setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
     setSolved(false);
+    setActiveLayer('');
   }, [difficulty]);
 
   const onSolve = useCallback(() => {
@@ -120,8 +127,10 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
     onReset,
     onSolve,
     solved,
-    error
-  }), [difficulty, setDifficulty, keys, setKeys, puzzle, setPuzzle, editKey, setEditKey, onReset, onSolve, solved, error])
+    error,
+    activeLayer,
+    setActiveLayer,
+  }), [difficulty, setDifficulty, keys, setKeys, puzzle, setPuzzle, editKey, setEditKey, onReset, onSolve, solved, error, activeLayer, setActiveLayer])
 
   return (
     <AutoSolverContext.Provider value={value}>

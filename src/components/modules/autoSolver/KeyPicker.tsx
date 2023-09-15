@@ -74,7 +74,7 @@ export const KeyPicker = () => {
                   return newKeys;
                 })
                 const nextIndex = editKey + 1;
-                if (nextIndex > keys.length - 1) {
+                if (nextIndex > currentKeys.length - 1) {
                   setEditKey(-1);
                 } else {
                   setEditKey(nextIndex);

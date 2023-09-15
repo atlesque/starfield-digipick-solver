@@ -4,7 +4,7 @@ import { useCanvasEventTransformers } from './useCanvasEventTransformers';
 import { useAutoSolver } from './useAutoSolver';
 
 export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, isPuzzle: boolean = false) => {
-  const { puzzle, setPuzzle } = useAutoSolver();
+  const { puzzle, setPuzzle, solved } = useAutoSolver();
   // backup copy
   const [p, setP] = useState(puzzle!);
   const editingRef = useRef(false);
@@ -48,5 +48,5 @@ export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, isPuzzle:
     setPuzzle(p);
   }, [p]);
 
-  useCanvasEventTransformers(canvasRef, isPuzzle, onPick, onPicking, onCancel)
+  useCanvasEventTransformers(canvasRef, isPuzzle && !solved, onPick, onPicking, onCancel)
 }

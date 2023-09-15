@@ -15,10 +15,10 @@ export const AutoSolverPage = () => {
     editKey,
     setEditKey,
     keys,
-    setKeys,
     onSolve,
     solved,
-    error
+    error,
+    setActiveLayer
   } = useAutoSolver();
 
   return (
@@ -33,14 +33,14 @@ export const AutoSolverPage = () => {
         <>
           <Puzzle />
           {error && (<ErrorMessage>{error}</ErrorMessage>)}
-          <Button primary disabled={solved} onClick={onSolve}>Solve Puzzle</Button>
+          <Button primary={!solved} disabled={solved} onClick={solved ? onReset : onSolve}>{solved ? 'Start Over' : 'Solve Puzzle'}</Button>
           <div className={styles.keyList}>
             {keys.map((k, i) => (
               <Key
                 key={i}
                 prongs={k.prongs}
                 layer={k.layer}
-                onClick={() => setEditKey(i)}
+                onClick={() => solved ? k.layer && setActiveLayer(k.layer) : setEditKey(i)}
               />
             ))}
           </div>

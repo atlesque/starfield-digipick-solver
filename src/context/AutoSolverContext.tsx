@@ -19,6 +19,8 @@ interface AutoSolverContextValue {
   error?: string
   activeLayer: string
   setActiveLayer: Dispatch<SetStateAction<string>>
+  guides: boolean
+  setGuides: Dispatch<SetStateAction<boolean>>
 }
 
 export const AutoSolverContext = createContext<AutoSolverContextValue>(null!);
@@ -38,6 +40,7 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
   const [puzzle, setPuzzle] = useState<Puzzle>(saved.puzzle ?? { layers: [] });
   const [editKey, setEditKey] = useState<number>(saved.editKey ?? -1);
   const [activeLayer, setActiveLayer] = useState(saved.activeLayer ?? '');
+  const [guides, setGuides] = useState(saved.guides ?? false);
 
   useEffect(() => {
     localStorage.setItem('save', JSON.stringify({
@@ -47,9 +50,10 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
       error,
       puzzle,
       editKey,
-      activeLayer
+      activeLayer,
+      guides
     }))
-  }, [difficulty, keys, solved, error, puzzle, editKey, activeLayer]);
+  }, [difficulty, keys, solved, error, puzzle, editKey, activeLayer, guides]);
 
   useEffect(() => {
     setKeys(k => {
@@ -131,7 +135,9 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
     error,
     activeLayer,
     setActiveLayer,
-  }), [difficulty, setDifficulty, keys, setKeys, puzzle, setPuzzle, editKey, setEditKey, onReset, onSolve, solved, error, activeLayer, setActiveLayer])
+    guides,
+    setGuides,
+  }), [difficulty, setDifficulty, keys, setKeys, puzzle, setPuzzle, editKey, setEditKey, onReset, onSolve, solved, error, activeLayer, setActiveLayer, guides, setGuides])
 
   return (
     <AutoSolverContext.Provider value={value}>

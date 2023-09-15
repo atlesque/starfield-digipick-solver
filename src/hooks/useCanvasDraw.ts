@@ -12,7 +12,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
   prongs,
   isPuzzle
 }: DrawOptions) => {
-  const { puzzle, solved, activeLayer } = useAutoSolver();
+  const { puzzle, solved, activeLayer, guides } = useAutoSolver();
 
   const prongMap = useMemo(() => {
     const s = new Set<number>();
@@ -67,6 +67,19 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         ctx.beginPath();
         ctx.arc(x, y, radius - (depth * 20), origin - prongWidth + offset, origin + prongWidth + offset);
         ctx.stroke();
+
+        if (isPuzzle && guides && i % 2 === 0) {
+          ctx.beginPath();
+          const x1 = x + radius * Math.cos(origin + offset) / 3;
+          const y1 = y + radius * Math.sin(origin + offset) / 3;
+          const x2 = x + radius * Math.cos(origin + offset);
+          const y2 = y + radius * Math.sin(origin + offset);
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.strokeStyle = 'orange';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
       }
     }
     
@@ -79,7 +92,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         renderProngs(set, i);
       })
     }
-  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer]);
+  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer, guides]);
 
   useEffect(() => {
     draw();

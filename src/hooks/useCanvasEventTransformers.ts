@@ -11,7 +11,7 @@ export const useCanvasEventTransformers = (
 ) => {
   // prong:layer
   const [prong, setProng] = useState('-1:-1');
-  const { activeLayer } = useAutoSolver();
+  const { activeLayer, mobileOffset } = useAutoSolver();
   const prongRef = useRef(prong);
   prongRef.current = prong;
 
@@ -27,16 +27,16 @@ export const useCanvasEventTransformers = (
     onPick(p, l);
   }, [])
 
-  const onStart = useCallback((x: number, y: number) => {
+  const onStart = useCallback((x: number, y: number, touch: boolean = false) => {
     if (!canvasRef.current) return;
     const center = canvasRef.current.width / 2;
-    setProng(() => getProngNumber(x, y, center, activeLayer));
+    setProng(() => getProngNumber(x, y, center, activeLayer, touch));
   }, [activeLayer])
 
-  const onMove = useCallback((x: number, y: number) => {
+  const onMove = useCallback((x: number, y: number, touch: boolean = false) => {
     if (!canvasRef.current) return;
     const center = canvasRef.current.width / 2;
-    setProng(() => getProngNumber(x, y, center, activeLayer));
+    setProng(() => getProngNumber(x, y, center, activeLayer, touch));
   }, [activeLayer])
 
   const onAbort = useCallback(() => {
@@ -73,11 +73,27 @@ export const useCanvasEventTransformers = (
     canvas.addEventListener('mouseleave', onMouseLeave)
     window.addEventListener('mouseup', onMouseUp)
 
-    const onTouchStart = () => {
+    const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      const canvas = e.target as HTMLCanvasElement
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.x;
+      const y = e.touches[0].clientY - rect.y;
+      
+      onStart(x, y, mobileOffset);
     }
-    const onTouchMove = () => {
+    const onTouchMove = (e: TouchEvent) => {
+      const canvas = e.target as HTMLCanvasElement
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.x;
+      const y = e.touches[0].clientY - rect.y;
+
+      requestAnimationFrame(() => {
+        onMove(x, y, mobileOffset);
+      })
     }
     const onTouchEnd = () => {
+      onCommit();
     }
     canvas.addEventListener('touchstart', onTouchStart)
     canvas.addEventListener('touchmove', onTouchMove)
@@ -92,5 +108,5 @@ export const useCanvasEventTransformers = (
       canvas.removeEventListener('touchend', onTouchEnd)
       window.removeEventListener('mouseup', onMouseUp)
     }
-  }, [canvasRef.current, edit, onStart, onAbort, onRelease])
+  }, [canvasRef.current, edit, onStart, onAbort, onRelease, mobileOffset])
 };

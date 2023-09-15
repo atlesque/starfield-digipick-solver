@@ -1,3 +1,8 @@
+.options {
+  display: flex;
+  gap: var(--spacing-half);
+}
+
 .puzzleWrapper {
   width: 100%;
   display: flex;

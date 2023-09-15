@@ -1,7 +1,7 @@
 import { MAX_PRONGS } from '../constants';
 
 // Thanks ChatGPT!
-export const getProngNumber = (x: number, y: number, center: number, activeLayer: string) => {
+export const getProngNumber = (x: number, y: number, center: number, activeLayer: string, offsetTouch: boolean = false) => {
   const angle_rad = Math.atan2(y - center, x - center);
 
   // Convert the angle to degrees if needed
@@ -15,7 +15,7 @@ export const getProngNumber = (x: number, y: number, center: number, activeLayer
   }
 
   // Calculate the radius from the center to the touch point
-  const radius = Math.sqrt((x - center) ** 2 + (y - center) ** 2);
+  const radius = Math.sqrt((x - center) ** 2 + (y - center) ** 2) / (offsetTouch ? 0.4 : 1);
 
   // Calculate the layer number
   let layerNumber = Math.floor(((center) - radius) / 20);

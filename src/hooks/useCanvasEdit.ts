@@ -48,5 +48,21 @@ export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, isPuzzle:
     setPuzzle(p);
   }, [p]);
 
+  useEffect(() => {
+    if (!isPuzzle) {
+      return;
+    }
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (e.target !== canvasRef.current && editingRef.current) {
+        editingRef.current = false;
+        setPuzzle(p);
+      }
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, [isPuzzle, p]);
+
   useCanvasEventTransformers(canvasRef, isPuzzle && !solved, onPick, onPicking, onCancel)
 }

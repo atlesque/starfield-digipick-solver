@@ -8,8 +8,10 @@ export const KeyPicker = () => {
   const { 
     keys,
     setProngQuantity,
-    onSetOption,
-    options
+    setChosenOption,
+    chosenOption,
+    options,
+    helpText
   } = useKeyPicker();
 
   const {
@@ -48,14 +50,15 @@ export const KeyPicker = () => {
       {!!options.length && (
         <>
           <hr style={{ width: '100%' }} />
-          <span>Select Smallest Gap Distance</span>
+          <span>{helpText}</span>
           <div className={styles.optionsContainer}>
-            {options.map(option => (
+            {options.map(o => (
               <Button
-                onClick={() => onSetOption(option)}
-                key={option}
+                onClick={() => setChosenOption(o)}
+                primary={o === chosenOption}
+                key={o}
               >
-                {`${option}`}
+                {`${o}`}
               </Button>
             ))}
           </div>

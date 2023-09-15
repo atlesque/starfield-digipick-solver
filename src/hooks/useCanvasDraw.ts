@@ -77,7 +77,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
           ctx.moveTo(x1, y1);
           ctx.lineTo(x2, y2);
           ctx.strokeStyle = 'orange';
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 2;
           ctx.stroke();
         }
       }

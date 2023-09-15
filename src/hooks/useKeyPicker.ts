@@ -17,6 +17,23 @@ export const useKeyPicker = () => {
   const [rotation, setRotation] = useState(0);
   const [prongQuantity, setProngQuantity] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
+  const [chosenOption, setChosenOption] = useState<string>('');
+  const [helpText, setHelpText] = useState('');
+
+  useEffect(() => {
+    const [gap, gap2] = chosenOption.split('-').map(n => Number(n) + 1);
+    const keys: DigiKey[] = [];
+    if (gap2) {
+      for (let i = gap + 2; (i + gap2 - 1) < MAX_PRONGS; i += 2) {
+        keys.push({ prongs: rotateKey([1, gap, i, i + gap2 - 1], rotation) })
+      }
+    } else {
+      for (let i = gap + 4; i < MAX_PRONGS - 2; i += 2) {
+        keys.push({ prongs: rotateKey([1, gap, i], rotation) });
+      }
+    }
+    setKeys(keys);
+  }, [rotation, chosenOption]);
 
   useEffect(() => {
     if (prongQuantity === 0) {
@@ -39,6 +56,8 @@ export const useKeyPicker = () => {
         options.push(i.toString());
       }
       setOptions(options);
+      setHelpText('Select the smallest gap between two prongs');
+      setChosenOption('2');
     }
 
     if (prongQuantity === 4) {
@@ -50,29 +69,18 @@ export const useKeyPicker = () => {
         }
       }
       setOptions(options);
+      setHelpText('Select the pair of smallest gaps between the two opposing pairs');
+      setChosenOption('2-2')
     }
-  }, [prongQuantity, rotation]);
-
-  const onSetOption = useCallback((option: string) => {
-    const [gap, gap2] = option.split('-').map(n => Number(n) + 1);
-    const keys: DigiKey[] = [];
-    if (gap2) {
-      for (let i = gap + 2; (i + gap2 - 1) < MAX_PRONGS; i += 2) {
-        keys.push({ prongs: rotateKey([1, gap, i, i + gap2 - 1], rotation) })
-      }
-    } else {
-      for (let i = gap + 4; i < MAX_PRONGS - 2; i += 2) {
-        keys.push({ prongs: rotateKey([1, gap, i], rotation) });
-      }
-    }
-    setKeys(keys);
-  }, [rotation]);
+  }, [prongQuantity, rotation, setChosenOption]);
 
   return {
     keys,
     setProngQuantity,
-    onSetOption,
+    setChosenOption,
+    chosenOption,
     options,
-    setRotation
+    setRotation,
+    helpText
   };
 };

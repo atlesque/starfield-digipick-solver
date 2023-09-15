@@ -1,3 +1,5 @@
+@use '/src/styles/breakpoints.scss';
+
 .root {
   width: 100%;
   max-width: 500px;
@@ -10,8 +12,45 @@
   width: 100%;
   max-width: 500px;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: var(--spacing);
+}
+
+.quantityContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: var(--spacing);
+  button {
+    font-size: var(--font-size-h6);
+    width: 100%;
+    padding: unset;
+
+    @media (min-width: breakpoints.$sm) {
+      font-size: var(--font-size-h4);
+    }
+  }
+}
+
+.optionsContainer {
+  width: 100%;
+  display: grid;
+  padding: var(--spacing-half);
+  background-color: rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.25);
+  margin-bottom: 6px;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: var(--spacing);
+  button {
+    font-size: var(--font-size-h6);
+    width: 100%;
+    margin: 0;
+    padding: unset;
+
+    @media (min-width: breakpoints.$sm) {
+      font-size: 14px;
+    }
+  }
 }
 
 .status {

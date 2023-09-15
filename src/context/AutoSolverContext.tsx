@@ -22,12 +22,30 @@ interface AutoSolverContextValue {
 export const AutoSolverContext = createContext<AutoSolverContextValue>(null!);
 
 export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
-  const [difficulty, setDifficulty] = useState(Difficulty.Novice);
-  const [keys, setKeys] = useState<DigiKey[]>([]);
-  const [solved, setSolved] = useState(false);
-  const [error, setError] = useState<string>();
-  const [puzzle, setPuzzle] = useState<Puzzle>({ layers: [] });
-  const [editKey, setEditKey] = useState(-1);
+  const saved = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem('save') ?? '');
+    } catch (e) {
+      return {};
+    }
+  }, []);
+  const [difficulty, setDifficulty] = useState<Difficulty>(saved.difficulty ?? Difficulty.Novice);
+  const [keys, setKeys] = useState<DigiKey[]>(saved.keys ?? []);
+  const [solved, setSolved] = useState<boolean>(saved.solved ?? false);
+  const [error, setError] = useState<string>(saved.error ?? undefined);
+  const [puzzle, setPuzzle] = useState<Puzzle>(saved.puzzle ?? { layers: [] });
+  const [editKey, setEditKey] = useState<number>(saved.editKey ?? -1);
+
+  useEffect(() => {
+    localStorage.setItem('save', JSON.stringify({
+      difficulty,
+      keys,
+      solved,
+      error,
+      puzzle,
+      editKey
+    }))
+  }, [difficulty, keys, solved, error, puzzle, editKey]);
 
   useEffect(() => {
     setKeys(k => {
@@ -38,8 +56,18 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
         }
       ))
     })
-    setPuzzle({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, () => ([])) })
+    setPuzzle(p => ({ layers: Array.from({ length: TOTAL_LAYERS_BY_DIFFICULTY[difficulty] }, (_, n) => (p.layers[n] ?? [])) }))
   }, [difficulty]);
+
+  useEffect(() => {
+    // @ts-expect-error
+    window.debug = () => {
+      console.log('==== PUZZLE ====');
+      console.log(JSON.stringify(puzzle));
+      console.log('==== KEYS ====');
+      console.log(JSON.stringify(keys));
+    };
+  }, [puzzle, keys])
 
   const onReset = useCallback(() => {
     setKeys(Array.from<unknown, DigiKey>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, () => ({

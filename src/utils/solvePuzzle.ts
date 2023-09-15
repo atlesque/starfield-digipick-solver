@@ -11,6 +11,8 @@ class Key implements DigiKey {
   ) {}
 }
 
+let iterations = 0;
+
 const findPath = (
   keys: Key[],
   path: string,
@@ -18,15 +20,13 @@ const findPath = (
   puzzle: Puzzle,
   failed: Set<string>
 ): string => {
+  iterations++;
   const layerKeys = keys.filter(k => k.layers[layer].length);
 
   for (const key of layerKeys) {
     for (const prongs of key.layers[layer]) {
       // Check if this key is already used!
-      if (path !== '|' && isKeyInPath(key, path)) continue;
-
-      // Identify if this current path is failing
-      if (failed.has(path)) {
+      if (path !== '|' && isKeyInPath(key, path)) {
         continue;
       }
 
@@ -46,12 +46,7 @@ const findPath = (
 
       try {
         return findPath(keys, nextPath, layer + (!nextPuzzle.layers[layer].length ? 1 : 0), nextPuzzle, failed);
-      } catch (e) {
-        if (path !== '|') {
-          failed.add(path);
-        }
-        continue;
-      }
+      } catch (e) {}
     }
   }
   
@@ -61,7 +56,9 @@ const findPath = (
 export const solvePuzzle = (puzzle: Puzzle, _keys: DigiKey[]): DigiKey[] => {
   const keys = _keys.map((k, i) => new Key(i, k.prongs, getValidPositionsByLayer(k.prongs, puzzle.layers)));
   
+  iterations = 0;
   const path = findPath(keys, '|', 0, puzzle, new Set<string>())
+  console.log('Iterations: ', iterations);
 
   const solvedKeys = path.split('|').filter(f => f).map((stringKey) => {
     const [layer, id, ...prongs] = stringKey.split('-');
@@ -137,3 +134,11 @@ const isKeyInPath = (key: Key, path: string) => {
     return key.id.toString() === id;
   });
 }
+
+// const keys = JSON.parse('[{"prongs":[1,9,15]},{"prongs":[1,3,21,25]},{"prongs":[1,15,21]},{"prongs":[1]},{"prongs":[1,15]},{"prongs":[1,19,25]},{"prongs":[1,3,23,27]},{"prongs":[1,11,17]},{"prongs":[1,3,25,29]},{"prongs":[1,11]},{"prongs":[1,7]},{"prongs":[1,15]}]');
+// const puzzle = JSON.parse('{"layers":[[7,5,11,17,19,15],[19,11,13,27,5],[11,15,29,31,3,9],[19,15,29,3,5]]}');
+
+// try {
+//   console.log(solvePuzzle(puzzle, keys));
+// } catch (e) {}
+// console.log('Attempts: ', attempts);

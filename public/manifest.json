@@ -1,0 +1,17 @@
+{
+  "lang": "en-us",
+  "name": "Starfield Digipick Solver",
+  "short_name": "Digipick",
+  "description": "A digipick lock solver for Starfield",
+  "start_url": "/",
+  "background_color": "#2f3d58",
+  "theme_color": "#2f3d58",
+  "orientation": "any",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -25,7 +25,9 @@ export const useCanvasManager = (opts: DrawOptions) => {
 
   useLayoutEffect(() => {
     onResize();
-  }, [onResize])
+    // Intentionally exclude onResize from dependencies.
+    // We only want this to be called on initial layout render.
+  }, [])
 
   useEffect(() => {
     const resize = () => requestAnimationFrame(onResize);

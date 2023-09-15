@@ -44,5 +44,9 @@ export const useCanvasEdit = (canvasRef: RefObject<HTMLCanvasElement>, isPuzzle:
     }
   }, [p])
 
-  useCanvasEventTransformers(canvasRef, isPuzzle, onPick, onPicking)
+  const onCancel = useCallback(() => {
+    setPuzzle(p);
+  }, [p]);
+
+  useCanvasEventTransformers(canvasRef, isPuzzle, onPick, onPicking, onCancel)
 }

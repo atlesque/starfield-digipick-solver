@@ -2,6 +2,7 @@ import update from 'immutability-helper';
 import { MAX_PRONGS } from '../constants';
 import { DigiKey } from '../types/DigiKey';
 import { Puzzle } from '../types/Puzzle';
+import { rotateKey } from './rotateKey';
 
 class Key implements DigiKey {
   constructor(
@@ -100,12 +101,6 @@ const getValidPositionsForKeyOnLayer = (prongs: number[], layer: number[]) => {
   return valid;
 }
 
-const rotateKey = (prongs: number[], by: number) => {
-  return prongs.map(n => {
-    return (((n + by) - 1) % MAX_PRONGS) + 1;
-  })
-}
-
 const doesKeyFit = (prongs: number[], layer: number[]) => {
   return prongs.every(p => layer.includes(p));
 }
@@ -134,11 +129,3 @@ const isKeyInPath = (key: Key, path: string) => {
     return key.id.toString() === id;
   });
 }
-
-// const keys = JSON.parse('[{"prongs":[1,9,15]},{"prongs":[1,3,21,25]},{"prongs":[1,15,21]},{"prongs":[1]},{"prongs":[1,15]},{"prongs":[1,19,25]},{"prongs":[1,3,23,27]},{"prongs":[1,11,17]},{"prongs":[1,3,25,29]},{"prongs":[1,11]},{"prongs":[1,7]},{"prongs":[1,15]}]');
-// const puzzle = JSON.parse('{"layers":[[7,5,11,17,19,15],[19,11,13,27,5],[11,15,29,31,3,9],[19,15,29,3,5]]}');
-
-// try {
-//   console.log(solvePuzzle(puzzle, keys));
-// } catch (e) {}
-// console.log('Attempts: ', attempts);

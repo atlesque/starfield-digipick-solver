@@ -10,6 +10,7 @@
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+  user-select: none;
 
   @media (min-width: breakpoints.$sm) {
     width: initial;

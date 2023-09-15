@@ -1,22 +1,10 @@
-import { DigiKey } from '../../../types/DigiKey';
 import { Key } from './Key';
 import styles from './KeyPicker.module.scss'
-import clsx from 'clsx';
 import { Button } from '../button/Button';
 import { useKeyPicker } from '../../../hooks/useKeyPicker';
+import { useAutoSolver } from '../../../hooks/useAutoSolver';
 
-interface KeyPickerProps {
-  keys: DigiKey[]
-  activeIndex: number
-  setActiveIndex: (i: number) => void
-  setKeys: React.Dispatch<React.SetStateAction<DigiKey[]>>
-}
-export const KeyPicker = ({
-  keys: currentKeys,
-  activeIndex,
-  setActiveIndex,
-  setKeys
-}: KeyPickerProps) => {
+export const KeyPicker = () => {
   const { 
     keys,
     setProngQuantity,
@@ -24,24 +12,36 @@ export const KeyPicker = ({
     options
   } = useKeyPicker();
 
+  const {
+    keys: currentKeys,
+    editKey,
+    setEditKey,
+    setKeys
+  } = useAutoSolver();
+
   return (
     <div className={styles.root}>
       <div className={styles.status}>
         {currentKeys.map((k, i) => (
-          <div key={i} className={clsx(styles.statusKey, {
-            [styles.valid]: !!k.prongs.length,
-            [styles.active]: i === activeIndex
-          })} />
+          <Key
+            prongs={k.prongs}
+            active={i === editKey}
+            onClick={() => setEditKey(i)}
+          />
         ))}
       </div>
-      <Button onClick={() => setActiveIndex(-1)}>BACK</Button>
+      <div>
+        <Button onClick={() => setEditKey(r => Math.max(r - 1, 0))}>&lt;</Button>
+        <Button onClick={() => setEditKey(-1)}>BACK</Button>
+        <Button onClick={() => setEditKey(r => Math.min(r + 1, currentKeys.length - 1))}>&gt;</Button>
+      </div>
       <div className={styles.quantityContainer}>
         {[0, 2, 3, 4].map((n) => (
           <Button
             onClick={() => setProngQuantity(n)}
             key={n}
           >
-            {n === 0 ? 'Clear' : `${n} Prongs`}
+            {n === 0 ? 'Basic' : `${n} Prongs`}
           </Button>
         ))}
       </div>
@@ -70,15 +70,14 @@ export const KeyPicker = ({
               onClick={(prongs) => {
                 setKeys(k => {
                   const newKeys = [...k];
-                  newKeys.splice(activeIndex, 1, { prongs });
+                  newKeys.splice(editKey, 1, { prongs });
                   return newKeys;
                 })
-                const nextIndex = activeIndex + 1;
+                const nextIndex = editKey + 1;
                 if (nextIndex > keys.length - 1) {
-                  setActiveIndex(-1);
+                  setEditKey(-1);
                 } else {
-                  setProngQuantity(0);
-                  setActiveIndex(nextIndex);
+                  setEditKey(nextIndex);
                 }
               }}
             />

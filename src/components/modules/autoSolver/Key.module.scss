@@ -18,6 +18,14 @@
   }
 }
 
+.active {
+  border: 1px solid var(--success-main);
+
+  &:hover {
+    border: 1px solid var(--success-main);
+  }
+}
+
 .warning {
   position: absolute;
   top: 0;

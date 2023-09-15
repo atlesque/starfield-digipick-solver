@@ -5,9 +5,9 @@ export const useCanvasEventTransformers = (
   canvasRef: RefObject<HTMLCanvasElement>,
   edit: boolean = false,
   onPick: (prong: number, layer: number) => void,
-  onPicking: (prong: number, layer: number) => void
+  onPicking: (prong: number, layer: number) => void,
+  onCancel: () => void
 ) => {
-  const draggingRef = useRef(false);
   // prong:layer
   const [prong, setProng] = useState('-1:-1');
   const prongRef = useRef(prong);
@@ -37,6 +37,11 @@ export const useCanvasEventTransformers = (
     setProng(() => getProngNumber(x, y, center));
   }, [])
 
+  const onAbort = useCallback(() => {
+    setProng('-1:-1');
+    onCancel();
+  }, [onCancel]);
+
   const onRelease = useCallback(() => {
     onCommit();
   }, [])
@@ -46,33 +51,31 @@ export const useCanvasEventTransformers = (
     if (!canvas || !edit) return;
 
     const onMouseDown = (e: MouseEvent) => {
-      draggingRef.current = true;
       onStart(e.offsetX, e.offsetY);
     }
     const onMouseMove = (e: MouseEvent) => {
-      if (!draggingRef.current) return;
       const { offsetX, offsetY } = e;
       requestAnimationFrame(() => {
         onMove(offsetX, offsetY);
       })
     }
+    const onMouseLeave = () => {
+      onAbort();
+    }
     const onMouseUp = () => {
-      draggingRef.current = false;
       onRelease();
     }
     canvas.addEventListener('mousedown', onMouseDown)
     canvas.addEventListener('mousemove', onMouseMove)
     canvas.addEventListener('mouseup', onMouseUp)
+    canvas.addEventListener('mouseleave', onMouseLeave)
     window.addEventListener('mouseup', onMouseUp)
 
     const onTouchStart = () => {
-      draggingRef.current = true;
     }
     const onTouchMove = () => {
-      if (!draggingRef.current) return;
     }
     const onTouchEnd = () => {
-      draggingRef.current = false;
     }
     canvas.addEventListener('touchstart', onTouchStart)
     canvas.addEventListener('touchmove', onTouchMove)
@@ -87,5 +90,5 @@ export const useCanvasEventTransformers = (
       canvas.removeEventListener('touchend', onTouchEnd)
       window.removeEventListener('mouseup', onMouseUp)
     }
-  }, [canvasRef.current, edit, onStart])
+  }, [canvasRef.current, edit, onStart, onAbort, onRelease])
 };

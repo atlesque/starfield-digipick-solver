@@ -7,6 +7,7 @@ interface KeyProps {
   isPuzzle?: boolean
   layer?: string
   rotation?: number
+  active?: boolean
   onClick?: (prongs: number[]) => void
 }
 export const Key = ({
@@ -14,6 +15,7 @@ export const Key = ({
   isPuzzle = false,
   rotation: _rotation = 0,
   layer,
+  active = false,
   onClick
 }: KeyProps) => {
   const { canvasRef, wrapperRef } = useCanvasManager({
@@ -22,7 +24,9 @@ export const Key = ({
   });
 
   return (
-    <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} className={styles.root}>
+    <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} className={clsx(styles.root, {
+      [styles.active]: active
+    })}>
       <canvas ref={canvasRef} />
       {!prongs.length && !isPuzzle && (
         <div className={styles.warning}>

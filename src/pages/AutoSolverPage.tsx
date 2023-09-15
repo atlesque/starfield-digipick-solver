@@ -46,12 +46,7 @@ export const AutoSolverPage = () => {
           </div>
         </>
       ) : (
-        <KeyPicker
-          keys={keys}
-          activeIndex={editKey}
-          setActiveIndex={(i) => setEditKey(i)}
-          setKeys={setKeys}
-        />
+        <KeyPicker />
       )}
     </div>
   );

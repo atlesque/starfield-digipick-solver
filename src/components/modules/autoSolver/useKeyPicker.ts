@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DigiKey } from '../types/DigiKey';
-import { MAX_PRONGS } from '../constants';
-import { rotateKey } from '../utils/rotateKey';
+import { DigiKey } from '../../../types/DigiKey';
+import { MAX_PRONGS } from '../../../constants';
+import { rotateKey } from '../../../utils/rotateKey';
 
 const quickKeys: DigiKey[] = [
   [1],

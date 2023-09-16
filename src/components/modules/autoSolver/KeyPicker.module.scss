@@ -32,6 +32,11 @@
   }
 }
 
+.optionsWrapper {
+  width: 100%;
+  border-top: 2px solid var(--background-light);
+}
+
 .optionsContainer {
   width: 100%;
   display: grid;
@@ -43,9 +48,8 @@
   grid-gap: var(--spacing);
   button {
     font-size: var(--font-size-h6);
-    width: 100%;
     margin: 0;
-    padding: unset;
+    padding: 0;
 
     @media (min-width: breakpoints.$sm) {
       font-size: 14px;

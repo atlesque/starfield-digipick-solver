@@ -1,7 +1,7 @@
 import { Key } from './Key';
 import styles from './KeyPicker.module.scss'
 import { Button } from '../button/Button';
-import { useKeyPicker } from '../../../hooks/useKeyPicker';
+import { useKeyPicker } from './useKeyPicker';
 import { useAutoSolver } from '../../../hooks/useAutoSolver';
 import { useMemo } from 'react';
 
@@ -56,8 +56,7 @@ export const KeyPicker = () => {
         ))}
       </div>
       {!!options.length && (
-        <>
-          <hr style={{ width: '100%' }} />
+        <div className={styles.optionsWrapper}>
           <span>{helpText}</span>
           <div className={styles.optionsContainer}>
             {optionsA.map(o => (
@@ -83,7 +82,7 @@ export const KeyPicker = () => {
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
       <div className={styles.keys}>
         {keys.map(({ prongs }, i) => {

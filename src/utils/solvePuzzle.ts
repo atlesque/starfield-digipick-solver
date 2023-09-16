@@ -1,5 +1,4 @@
 import update from 'immutability-helper';
-import { MAX_PRONGS } from '../constants';
 import { DigiKey } from '../types/DigiKey';
 import { Puzzle } from '../types/Puzzle';
 import { rotateKey } from './rotateKey';

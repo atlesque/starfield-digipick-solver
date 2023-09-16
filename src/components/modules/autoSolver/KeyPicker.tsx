@@ -34,6 +34,7 @@ export const KeyPicker = () => {
       <div className={styles.status}>
         {currentKeys.map((k, i) => (
           <Key
+            key={i}
             prongs={k.prongs}
             active={i === editKey}
             onClick={() => setEditKey(i)}

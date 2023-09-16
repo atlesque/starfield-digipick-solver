@@ -2,16 +2,12 @@ import update from 'immutability-helper';
 import { DigiKey } from '../types/DigiKey';
 import { Puzzle } from '../types/Puzzle';
 import { rotateKey } from './rotateKey';
+import { MAX_PRONGS } from '../constants';
 
-class Key implements DigiKey {
-  constructor(
-    public id: number,
-    public prongs: number[],
-    public layers: number[][][]
-  ) {}
+interface Key extends DigiKey {
+  id: number;
+  layers: number[][][];
 }
-
-let iterations = 0;
 
 const findPath = (
   keys: Key[],
@@ -20,7 +16,6 @@ const findPath = (
   puzzle: Puzzle,
   failed: Set<string>
 ): string => {
-  iterations++;
   const layerKeys = keys.filter(k => k.layers[layer].length);
 
   for (const key of layerKeys) {
@@ -46,7 +41,9 @@ const findPath = (
 
       try {
         return findPath(keys, nextPath, layer + (!nextPuzzle.layers[layer].length ? 1 : 0), nextPuzzle, failed);
-      } catch (e) {}
+      } catch (e) {
+        continue;
+      }
     }
   }
   
@@ -54,11 +51,9 @@ const findPath = (
 }
 
 export const solvePuzzle = (puzzle: Puzzle, _keys: DigiKey[]): DigiKey[] => {
-  const keys = _keys.map((k, i) => new Key(i, k.prongs, getValidPositionsByLayer(k.prongs, puzzle.layers)));
+  const keys: Key[] = _keys.map((k, id) => ({ id, layers: getValidPositionsByLayer(k.prongs, puzzle.layers), prongs: k.prongs }));
   
-  iterations = 0;
   const path = findPath(keys, '|', 0, puzzle, new Set<string>())
-  console.log('Iterations: ', iterations);
 
   const solvedKeys = path.split('|').filter(f => f).map((stringKey) => {
     const [layer, id, ...prongs] = stringKey.split('-');
@@ -91,7 +86,7 @@ const getValidPositionsByLayer = (prongs: number[], layers: number[][]) => {
 
 const getValidPositionsForKeyOnLayer = (prongs: number[], layer: number[]) => {
   const valid: number[][] = []
-  for (let r = 0; r < 32; r += 2) {
+  for (let r = 0; r < MAX_PRONGS; r += 2) {
     const p = rotateKey(prongs, r);
     if (doesKeyFit(p, layer)) {
       valid.push(p)

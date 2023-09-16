@@ -32,6 +32,13 @@
   }
 }
 
+.gapIllustration {
+  margin-bottom: var(--spacing-half);
+  button {
+    font-size: var(--font-size-h6);
+  }
+}
+
 .optionsWrapper {
   width: 100%;
   border-top: 2px solid var(--background-light);

@@ -4,6 +4,7 @@ import { DigiKey } from '../types/DigiKey';
 import { Puzzle } from '../types/Puzzle';
 import { solvePuzzle } from '../utils/solvePuzzle';
 
+type gapIllustrationMode = 'visual' | 'numbers' | 'none';
 interface AutoSolverContextValue {
   difficulty: Difficulty
   setDifficulty: Dispatch<SetStateAction<Difficulty>>
@@ -23,6 +24,8 @@ interface AutoSolverContextValue {
   setGuides: Dispatch<SetStateAction<boolean>>
   mobileOffset: boolean
   setMobileOffset: Dispatch<SetStateAction<boolean>>
+  gapIllustrationMode: gapIllustrationMode
+  setGapIllustrationMode: Dispatch<SetStateAction<gapIllustrationMode>>
 }
 
 export const AutoSolverContext = createContext<AutoSolverContextValue>(null!);
@@ -44,6 +47,7 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
   const [activeLayer, setActiveLayer] = useState(saved.activeLayer ?? '');
   const [guides, setGuides] = useState(saved.guides ?? false);
   const [mobileOffset, setMobileOffset] = useState(saved.guides ?? false);
+  const [gapIllustrationMode, setGapIllustrationMode] = useState(saved.gapIllustrationMode ?? 'numbers');
 
   useEffect(() => {
     localStorage.setItem('save', JSON.stringify({
@@ -55,9 +59,10 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
       editKey,
       activeLayer,
       guides,
-      mobileOffset
+      mobileOffset,
+      gapIllustrationMode
     }))
-  }, [difficulty, keys, solved, error, puzzle, editKey, activeLayer, guides, mobileOffset]);
+  }, [difficulty, keys, solved, error, puzzle, editKey, activeLayer, guides, mobileOffset, gapIllustrationMode]);
 
   useEffect(() => {
     setKeys(k => {
@@ -142,8 +147,10 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
     guides,
     setGuides,
     mobileOffset,
-    setMobileOffset
-  }), [difficulty, setDifficulty, keys, setKeys, puzzle, setPuzzle, editKey, setEditKey, onReset, onSolve, solved, error, activeLayer, setActiveLayer, guides, setGuides, mobileOffset, setMobileOffset])
+    setMobileOffset,
+    gapIllustrationMode,
+    setGapIllustrationMode
+  }), [difficulty, setDifficulty, keys, setKeys, puzzle, setPuzzle, editKey, setEditKey, onReset, onSolve, solved, error, activeLayer, setActiveLayer, guides, setGuides, mobileOffset, setMobileOffset, gapIllustrationMode, setGapIllustrationMode])
 
   return (
     <AutoSolverContext.Provider value={value}>

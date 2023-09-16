@@ -6,6 +6,7 @@ import { useAutoSolver } from '../../../hooks/useAutoSolver'
 interface KeyProps {
   prongs?: number[]
   isPuzzle?: boolean
+  illustrateGaps?: boolean
   layer?: string
   rotation?: number
   active?: boolean
@@ -14,6 +15,7 @@ interface KeyProps {
 export const Key = ({
   prongs = [],
   isPuzzle = false,
+  illustrateGaps = false,
   rotation: _rotation = 0,
   layer,
   active = false,
@@ -21,7 +23,8 @@ export const Key = ({
 }: KeyProps) => {
   const { canvasRef, wrapperRef } = useCanvasManager({
     prongs,
-    isPuzzle
+    isPuzzle,
+    illustrateGaps
   });
 
   const { activeLayer, solved } = useAutoSolver();

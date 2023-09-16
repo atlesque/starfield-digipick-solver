@@ -1,18 +1,22 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { MAX_PRONGS } from '../constants'
 import { useAutoSolver } from './useAutoSolver'
-import { COLOR_NO_PRONG, COLOR_PRONG, COLOR_PUZZLE_NO_PRONG, COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE, COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE, COLOR_PUZZLE_PRONG } from '../styles/palette'
+import { COLOR_GAP_GREEN, COLOR_GAP_WHITE, COLOR_NO_PRONG, COLOR_PRONG, COLOR_PUZZLE_NO_PRONG, COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE, COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE, COLOR_PUZZLE_PRONG } from '../styles/palette'
 
 export interface DrawOptions {
   prongs: number[]
   isPuzzle?: boolean
+  illustrateGaps?: boolean
 }
+
+const PI = Math.PI;
 
 export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
   prongs,
-  isPuzzle
+  isPuzzle,
+  illustrateGaps
 }: DrawOptions) => {
-  const { puzzle, solved, activeLayer, guides } = useAutoSolver();
+  const { puzzle, solved, activeLayer, guides, gapIllustrationMode } = useAutoSolver();
 
   const prongMap = useMemo(() => {
     const s = new Set<number>();
@@ -26,12 +30,20 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Center points of circle
     const x = canvas.width / 2;
     const y = canvas.height / 2;
+
+    // Radius of ring with some padding
     const radius = canvas.height / 2 - 10;
-    const PI = Math.PI;
-    const origin = -0.5 * PI;
+
+    // Set origin to north (0 = East, 2*PI = 360deg)
+    const origin = 1.5 * PI;
+
+    // Individual prong offset size is 360deg / max prongs
     const prongOffsetSize = 2 * PI / MAX_PRONGS;
+
+    // Prong width
     const prongWidth = isPuzzle ? 0.08 : 0.06;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -81,6 +93,58 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
           ctx.stroke();
         }
       }
+
+      if (illustrateGaps && gapIllustrationMode !== 'none') {
+        let ordered: number[] = [];
+        for (const p of prongs.keys()) {
+          ordered.push(p);
+        }
+        ordered.sort((a, b) => a - b);
+
+        ordered.forEach((p, i) => {
+          const gap = 0.12;
+          const a = p - 1;
+          const b = (ordered[i + 1] ?? (ordered[0] + MAX_PRONGS)) - 1;
+          const start = origin + a * prongOffsetSize + gap;
+          const end = origin + b * prongOffsetSize - gap;
+          const gapRadius = radius - 9;
+
+          ctx.beginPath();
+          ctx.arc(x, y, gapRadius, start, end);
+          ctx.lineWidth = 2;
+          const color = (() => {
+            if (ordered.length === 3) {
+              return i === 0 ? COLOR_GAP_GREEN : COLOR_GAP_WHITE;
+            } else if (ordered.length === 2) {
+              return COLOR_GAP_WHITE;
+            } else {
+              return i % 2 === 0 ? COLOR_GAP_GREEN : COLOR_GAP_WHITE;
+            }
+          })();
+          ctx.strokeStyle = color;
+          ctx.stroke();
+
+          if (gapIllustrationMode !== 'numbers') {
+            return;
+          }
+          
+          // Calculate the average angle
+          const averageAngle = (start + end) / 2;
+
+          // Calculate the x and y coordinates
+          const textX = x + (gapRadius + 10) * Math.cos(averageAngle);
+          const textY = y + (gapRadius + 10) * Math.sin(averageAngle);
+
+          const gapSize = b - a;
+          if (gapSize > 2) {
+            ctx.fillStyle = color;
+            ctx.font = '12px Courier New';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(gapSize.toString(), textX, textY);
+          }
+        });
+      }
     }
     
     if (!isPuzzle) {
@@ -92,7 +156,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         renderProngs(set, i);
       })
     }
-  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer, guides]);
+  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer, guides, illustrateGaps, gapIllustrationMode]);
 
   useEffect(() => {
     draw();

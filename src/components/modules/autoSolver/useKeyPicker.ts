@@ -77,6 +77,7 @@ export const useKeyPicker = () => {
   return {
     keys,
     setProngQuantity,
+    prongQuantity,
     setChosenOption,
     chosenOption,
     options,

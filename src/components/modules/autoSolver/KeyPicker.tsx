@@ -9,6 +9,7 @@ export const KeyPicker = () => {
   const { 
     keys,
     setProngQuantity,
+    prongQuantity,
     setChosenOption,
     chosenOption,
     options,
@@ -19,7 +20,9 @@ export const KeyPicker = () => {
     keys: currentKeys,
     editKey,
     setEditKey,
-    setKeys
+    setKeys,
+    setGapIllustrationMode,
+    gapIllustrationMode
   } = useAutoSolver();
 
   const [optionsA, optionsB] = useMemo(() => options.reduce<string[][]>(([a, b], option) => {
@@ -85,11 +88,37 @@ export const KeyPicker = () => {
           )}
         </div>
       )}
+      <div className={styles.gapIllustration}>
+        <Button
+          onClick={() => {
+            if (gapIllustrationMode === 'none') {
+              setGapIllustrationMode('visual');
+            } else if (gapIllustrationMode === 'visual') {
+              setGapIllustrationMode('numbers');
+            } else {
+              setGapIllustrationMode('none');
+            }
+          }}
+        >
+          {(() => {
+            if (gapIllustrationMode === 'none') {
+              return 'Show Gap Lines';
+            }
+
+            if (gapIllustrationMode === 'numbers') {
+              return 'Hide Gap Helpers';
+            }
+
+            return 'Show Gap Distances';
+          })()}
+        </Button>
+      </div>
       <div className={styles.keys}>
         {keys.map(({ prongs }, i) => {
           return (
             <Key
               key={i}
+              illustrateGaps={prongQuantity !== 0}
               prongs={prongs}
               onClick={(prongs) => {
                 setKeys(k => {

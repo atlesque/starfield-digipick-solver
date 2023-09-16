@@ -3,6 +3,7 @@ import styles from './KeyPicker.module.scss'
 import { Button } from '../button/Button';
 import { useKeyPicker } from '../../../hooks/useKeyPicker';
 import { useAutoSolver } from '../../../hooks/useAutoSolver';
+import { useMemo } from 'react';
 
 export const KeyPicker = () => {
   const { 
@@ -20,6 +21,13 @@ export const KeyPicker = () => {
     setEditKey,
     setKeys
   } = useAutoSolver();
+
+  const [optionsA, optionsB] = useMemo(() => options.reduce<string[][]>(([a, b], option) => {
+    const [first, second] = option.split('-');
+    if (!a.includes(first)) a.push(first);
+    if (second && !b.includes(second)) b.push(second);
+    return [a, b];
+  }, [[], []]), [options]);
 
   return (
     <div className={styles.root}>
@@ -52,16 +60,29 @@ export const KeyPicker = () => {
           <hr style={{ width: '100%' }} />
           <span>{helpText}</span>
           <div className={styles.optionsContainer}>
-            {options.map(o => (
+            {optionsA.map(o => (
               <Button
-                onClick={() => setChosenOption(o)}
-                primary={o === chosenOption}
+                onClick={() => setChosenOption(optionsB.length ? `${o}-${chosenOption.split('-')[1]}` : o)}
+                primary={o === chosenOption.split('-')[0]}
                 key={o}
               >
                 {`${o}`}
               </Button>
             ))}
           </div>
+          {!!optionsB.length && (
+            <div className={styles.optionsContainer}>
+              {optionsB.map(o => (
+                <Button
+                  onClick={() => setChosenOption(`${chosenOption.split('-')[0]}-${o}`)}
+                  primary={o === chosenOption.split('-')[1]}
+                  key={o}
+                >
+                  {`${o}`}
+                </Button>
+              ))}
+            </div>
+          )}
         </>
       )}
       <div className={styles.keys}>

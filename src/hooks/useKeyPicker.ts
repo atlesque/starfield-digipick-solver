@@ -62,14 +62,14 @@ export const useKeyPicker = () => {
 
     if (prongQuantity === 4) {
       const options: string[] = [];
-      for (let i = 2; i <= Math.floor(MAX_PRONGS / 4 - 2); i += 2) {
+      for (let i = 2; i <= Math.floor(MAX_PRONGS / 2); i += 2) {
         for (let j = 2; j <= Math.floor(MAX_PRONGS / 2); j += 2) {
           if (options.includes(`${j}-${i}`)) continue;
           options.push(`${i}-${j}`);
         }
       }
       setOptions(options);
-      setHelpText('Select the pair of smallest gaps between the two opposing pairs');
+      setHelpText('Select the gap sizes of the two separate pairs of prongs');
       setChosenOption('2-2')
     }
   }, [prongQuantity, rotation, setChosenOption]);

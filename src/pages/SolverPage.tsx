@@ -99,7 +99,6 @@ export const SolverPage = () => {
     localStorage.setItem(LOCAL_STORAGE_ACTIVE_DIFFICULTY, JSON.stringify(activeDifficulty));
     localStorage.setItem(LOCAL_STORAGE_FILTERED_LAYER, JSON.stringify(filteredLayer));
     localStorage.setItem(LOCAL_STORAGE_KEY_CIRCLES, JSON.stringify(keyCircles));
-    if (LOCAL_STORAGE_ACTIVE_DIFFICULTY) console.log('test');
   }, [activeDifficulty, filteredLayer, keyCircles]);
 
   return (

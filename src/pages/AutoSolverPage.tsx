@@ -6,6 +6,7 @@ import { Puzzle } from '../components/modules/autoSolver/Puzzle';
 import { useAutoSolver } from '../hooks/useAutoSolver';
 import { Button } from '../components/modules/button/Button';
 import { ErrorMessage } from '../components/modules/errorMessage/ErrorMessage';
+import { Link } from 'react-router-dom';
 
 export const AutoSolverPage = () => {
   const {
@@ -32,11 +33,33 @@ export const AutoSolverPage = () => {
       {editKey === -1 ? (
         <>
           <Puzzle />
-          {error && (<ErrorMessage>{error}</ErrorMessage>)}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
           <div>
-            {!solved && <Button primary onClick={() => setActiveLayer(l => (l === '1' || !l) ? '' : (Number(l) - 1).toString())}>&lt;</Button>}
-            <Button primary={!solved} disabled={solved} onClick={solved ? onReset : onSolve}>{solved ? 'Start Over' : 'Solve Puzzle'}</Button>
-            {!solved && <Button primary onClick={() => setActiveLayer(l => !l ? '1' : (Math.min(Number(l) + 1, puzzle.layers.length)).toString())}>&gt;</Button>}
+            {!solved && (
+              <Button
+                primary
+                onClick={() =>
+                  setActiveLayer(l => (l === '1' || !l ? '' : (Number(l) - 1).toString()))
+                }
+              >
+                &lt;
+              </Button>
+            )}
+            <Button primary={!solved} disabled={solved} onClick={solved ? onReset : onSolve}>
+              {solved ? 'Start Over' : 'Solve Puzzle'}
+            </Button>
+            {!solved && (
+              <Button
+                primary
+                onClick={() =>
+                  setActiveLayer(l =>
+                    !l ? '1' : Math.min(Number(l) + 1, puzzle.layers.length).toString()
+                  )
+                }
+              >
+                &gt;
+              </Button>
+            )}
           </div>
           <div className={styles.keyList}>
             {keys.map((k, i) => (
@@ -44,7 +67,7 @@ export const AutoSolverPage = () => {
                 key={i}
                 prongs={k.prongs}
                 layer={k.layer}
-                onClick={() => solved ? k.layer && setActiveLayer(k.layer) : setEditKey(i)}
+                onClick={() => (solved ? k.layer && setActiveLayer(k.layer) : setEditKey(i))}
               />
             ))}
           </div>
@@ -52,6 +75,11 @@ export const AutoSolverPage = () => {
       ) : (
         <KeyPicker />
       )}
+      <div className={styles.footerLinkWrapper}>
+        <Link to="/" className="link">
+          Back to manual solver
+        </Link>
+      </div>
     </div>
   );
-}
+};

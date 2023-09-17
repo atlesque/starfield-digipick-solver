@@ -81,9 +81,11 @@ export const SolverPage = () => {
           />
         ))}
       </div>
-      <div className={styles.autoSolver}>
-        <h1 className={styles.title}>Auto Solver</h1>
-        <Link to="/auto-solver">Try the new auto solver!</Link>
+      <div className={styles.footerLinkWrapper}>
+        <span>⭐</span>
+        <Link to="/auto-solver" className="link">
+          Try the new auto solver!
+        </Link>
       </div>
     </div>
   );

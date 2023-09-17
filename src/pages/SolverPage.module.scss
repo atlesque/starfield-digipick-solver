@@ -32,6 +32,8 @@
   text-transform: uppercase;
 }
 
-.autoSolver {
+.footerLinkWrapper {
   width: 100%;
+  display: flex;
+  gap: var(--spacing);
 }

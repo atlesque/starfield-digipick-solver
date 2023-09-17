@@ -1,41 +1,28 @@
 module.exports = {
   env: {
     browser: true,
-    es2022: true,
+    es2021: true,
   },
   extends: [
-    'eslint:recommended',
+    'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:react-hooks/recommended',
   ],
-  overrides: [
-    {
-      files: ['**/*.cjs'],
-      env: {
-        node: true,
-      },
-    },
-  ],
+  overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.json',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: ['react', '@typescript-eslint'],
   rules: {
-    'react/react-in-jsx-scope': 'off',
-    camelcase: 'error',
-    'spaced-comment': 'error',
-    quotes: ['error', 'single'],
-    'no-duplicate-imports': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    curly: ['error', 'all'],
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {},
-    },
+    'react/react-in-jsx-scope': 0,
+    'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
+    curly: [2, 'all'],
+    'react/no-array-index-key': 1,
+    'arrow-parens': [2, 'as-needed'],
   },
 };

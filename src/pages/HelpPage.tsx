@@ -10,6 +10,7 @@ export const HelpPage = () => {
       </header>
       <article className={styles.howToGuide}>
         <h1>How to use</h1>
+        <h2>Manual solver</h2>
         <ul>
           <li>Choose the SECURITY LEVEL</li>
           <li>
@@ -36,11 +37,15 @@ export const HelpPage = () => {
           <li>Work your way through the keys, highlighting layers until you finish all of them</li>
           <li>Click RESET to start anew</li>
         </ul>
+        <h2>Auto-solver</h2>
+        <Link to="/auto-solver" className="link">
+          Try the new auto solver!
+        </Link>
         <p>
-          This tool doesn't auto-solve, as that would require image recognition for the key shapes,
-          but it makes it a lot easier to remember which key corresponds to which layer. It's still
-          tricky but it doesn't require as much mental capacity to remember the keys and their
-          layers/locations.
+          Made by{' '}
+          <a href="https://github.com/Andrew1431" target="_blank" className="link">
+            @Andrew1431
+          </a>
         </p>
       </article>
     </div>

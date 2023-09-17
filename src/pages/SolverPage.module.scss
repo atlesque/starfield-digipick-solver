@@ -10,43 +10,11 @@
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+  user-select: none;
 
   @media (min-width: breakpoints.$sm) {
     width: initial;
     padding-top: var(--spacing-2);
-  }
-}
-
-.settings {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-2);
-  align-items: flex-start;
-  width: 100%;
-  max-width: 400px;
-
-  @media (min-width: breakpoints.$sm) {
-    width: initial;
-    max-width: initial;
-  }
-}
-
-.settingsRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--spacing-2);
-  width: 100%;
-}
-
-.resetButton {
-  text-transform: uppercase;
-  color: var(--text-primary);
-  font-size: var(--font-size-h6);
-
-  @media (min-width: breakpoints.$sm) {
-    font-size: var(--font-size-h3);
   }
 }
 
@@ -56,4 +24,14 @@
   grid-gap: var(--spacing);
   width: 100%;
   max-width: 500px;
+}
+
+.title {
+  font-size: var(--font-size-h6);
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.autoSolver {
+  width: 100%;
 }

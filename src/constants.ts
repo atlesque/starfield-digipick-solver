@@ -28,3 +28,6 @@ export const TOTAL_LAYERS_BY_DIFFICULTY: TotalLayersByDifficulty = {
 };
 
 export const MAX_KEYS = TOTAL_KEYS_BY_DIFFICULTY[Difficulty.Master];
+
+// NON-ZERO-INDEXED
+export const MAX_PRONGS = 32;

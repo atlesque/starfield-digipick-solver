@@ -1,0 +1,30 @@
+@use '/src/styles/breakpoints.scss';
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 500px;
+}
+
+.settingsRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-2);
+  width: 100%;
+}
+
+.resetButton {
+  text-transform: uppercase;
+  color: var(--text-primary);
+  font-size: var(--font-size-h6);
+
+  @media (min-width: breakpoints.$sm) {
+    font-size: var(--font-size-h3);
+  }
+}

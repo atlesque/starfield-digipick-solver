@@ -1,0 +1,21 @@
+.options {
+  display: flex;
+  gap: var(--spacing-half);
+}
+
+.puzzleWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & button {
+    font-size: 0.8rem;
+  }
+}
+
+.puzzle {
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 300px;
+}

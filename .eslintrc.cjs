@@ -10,7 +10,15 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  overrides: [],
+  overrides: [
+    {
+      files: ['**/*.cjs'],
+      env: {
+        node: true,
+      },
+    },
+  ],
+  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',

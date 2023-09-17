@@ -4,7 +4,7 @@
   "short_name": "Digipick",
   "description": "A Digipick lock solver for Starfield",
   "start_url": "/",
-  "background_color": "#294779",
+  "background_color": "#12181F",
   "theme_color": "#294779",
   "orientation": "any",
   "display": "standalone",

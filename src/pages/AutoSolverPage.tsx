@@ -1,15 +1,15 @@
-import { Key } from '../components/modules/autoSolver/Key';
-import { Settings } from '../components/modules/settings/Settings';
-import styles from './SolverPage.module.scss'
-import { KeyPicker } from '../components/modules/autoSolver/KeyPicker';
-import { Puzzle } from '../components/modules/autoSolver/Puzzle';
-import { useAutoSolver } from '../hooks/useAutoSolver';
-import { Button } from '../components/modules/button/Button';
-import { ErrorMessage } from '../components/modules/errorMessage/ErrorMessage';
 import { Link } from 'react-router-dom';
-import { AppRoutes } from '../routes';
+import Key from '../components/modules/autoSolver/Key';
+import Settings from '../components/modules/settings/Settings';
+import styles from './SolverPage.module.scss';
+import KeyPicker from '../components/modules/autoSolver/KeyPicker';
+import Puzzle from '../components/modules/autoSolver/Puzzle';
+import useAutoSolver from '../hooks/useAutoSolver';
+import Button from '../components/modules/button/Button';
+import ErrorMessage from '../components/modules/errorMessage/ErrorMessage';
+import AppRoutes from '../routes';
 
-export const AutoSolverPage = () => {
+const AutoSolverPage = () => {
   const {
     difficulty,
     setDifficulty,
@@ -53,7 +53,8 @@ export const AutoSolverPage = () => {
               <Button
                 primary
                 onClick={() =>
-                  setActiveLayer(l =>
+                  // eslint-disable-next-line no-confusing-arrow
+                  setActiveLayer((l: unknown) =>
                     !l ? '1' : Math.min(Number(l) + 1, puzzle.layers.length).toString()
                   )
                 }
@@ -84,3 +85,5 @@ export const AutoSolverPage = () => {
     </div>
   );
 };
+
+export default AutoSolverPage;

@@ -1,10 +1,8 @@
 import { PropsWithChildren } from 'react';
 import styles from './ErrorMessage.module.scss';
 
-export const ErrorMessage = ({ children }: PropsWithChildren) => {
-  return (
-    <div className={styles.error}>
-      {children}
-    </div>
-  )
-};
+const ErrorMessage = ({ children }: PropsWithChildren) => (
+  <div className={styles.error}>{children}</div>
+);
+
+export default ErrorMessage;

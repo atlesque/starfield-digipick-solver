@@ -1,4 +1,4 @@
 export interface DigiKey {
-  prongs: number[]
-  layer?: string
+  prongs: number[];
+  layer?: string;
 }

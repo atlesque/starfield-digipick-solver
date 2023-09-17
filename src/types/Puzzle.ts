@@ -1,3 +1,3 @@
 export interface Puzzle {
-  layers: number[][];
+  layers: number[][]
 }

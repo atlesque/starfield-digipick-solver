@@ -1,19 +1,19 @@
+import { Key } from './Key';
+import styles from './KeyPicker.module.scss'
+import { Button } from '../button/Button';
+import { useKeyPicker } from './useKeyPicker';
+import { useAutoSolver } from '../../../hooks/useAutoSolver';
 import { useMemo } from 'react';
-import Key from './Key';
-import styles from './KeyPicker.module.scss';
-import Button from '../button/Button';
-import useKeyPicker from './useKeyPicker';
-import useAutoSolver from '../../../hooks/useAutoSolver';
 
-const KeyPicker = () => {
-  const {
+export const KeyPicker = () => {
+  const { 
     keys,
     setProngQuantity,
     prongQuantity,
     setChosenOption,
     chosenOption,
     options,
-    helpText,
+    helpText
   } = useKeyPicker();
 
   const {
@@ -22,44 +22,39 @@ const KeyPicker = () => {
     setEditKey,
     setKeys,
     setGapIllustrationMode,
-    gapIllustrationMode,
+    gapIllustrationMode
   } = useAutoSolver();
 
-  const [optionsA, optionsB] = useMemo(
-    () =>
-      options.reduce<string[][]>(
-        ([a, b], option) => {
-          const [first, second] = option.split('-');
-          if (!a.includes(first)) {
-            a.push(first);
-          }
-          if (second && !b.includes(second)) {
-            b.push(second);
-          }
-          return [a, b];
-        },
-        [[], []]
-      ),
-    [options]
-  );
+  const [optionsA, optionsB] = useMemo(() => options.reduce<string[][]>(([a, b], option) => {
+    const [first, second] = option.split('-');
+    if (!a.includes(first)) a.push(first);
+    if (second && !b.includes(second)) b.push(second);
+    return [a, b];
+  }, [[], []]), [options]);
 
   return (
     <div className={styles.root}>
       <div className={styles.status}>
         {currentKeys.map((k, i) => (
-          <Key key={i} prongs={k.prongs} active={i === editKey} onClick={() => setEditKey(i)} />
+          <Key
+            key={i}
+            prongs={k.prongs}
+            active={i === editKey}
+            onClick={() => setEditKey(i)}
+          />
         ))}
       </div>
       <div>
         <Button onClick={() => setEditKey(r => Math.max(r - 1, 0))}>&lt;</Button>
         <Button onClick={() => setEditKey(-1)}>BACK</Button>
-        <Button onClick={() => setEditKey(r => Math.min(r + 1, currentKeys.length - 1))}>
-          &gt;
-        </Button>
+        <Button onClick={() => setEditKey(r => Math.min(r + 1, currentKeys.length - 1))}>&gt;</Button>
       </div>
       <div className={styles.quantityContainer}>
-        {[0, 2, 3, 4].map(n => (
-          <Button onClick={() => setProngQuantity(n)} key={n}>
+        {[0, 2, 3, 4].map((n) => (
+          <Button
+            onClick={() => setProngQuantity(n)}
+            key={n}
+          >
             {n === 0 ? 'Basic' : `${n} Prongs`}
           </Button>
         ))}
@@ -70,9 +65,7 @@ const KeyPicker = () => {
           <div className={styles.optionsContainer}>
             {optionsA.map(o => (
               <Button
-                onClick={() =>
-                  setChosenOption(optionsB.length ? `${o}-${chosenOption.split('-')[1]}` : o)
-                }
+                onClick={() => setChosenOption(optionsB.length ? `${o}-${chosenOption.split('-')[1]}` : o)}
                 primary={o === chosenOption.split('-')[0]}
                 key={o}
               >
@@ -121,29 +114,29 @@ const KeyPicker = () => {
         </Button>
       </div>
       <div className={styles.keys}>
-        {keys.map(({ prongs }, i) => (
-          <Key
-            key={i}
-            illustrateGaps={prongQuantity !== 0}
-            prongs={prongs}
-            onClick={clickedProngs => {
-              setKeys(k => {
-                const newKeys = [...k];
-                newKeys.splice(editKey, 1, { prongs: clickedProngs });
-                return newKeys;
-              });
-              const nextIndex = editKey + 1;
-              if (nextIndex > currentKeys.length - 1) {
-                setEditKey(-1);
-              } else {
-                setEditKey(nextIndex);
-              }
-            }}
-          />
-        ))}
+        {keys.map(({ prongs }, i) => {
+          return (
+            <Key
+              key={i}
+              illustrateGaps={prongQuantity !== 0}
+              prongs={prongs}
+              onClick={(prongs) => {
+                setKeys(k => {
+                  const newKeys = [...k];
+                  newKeys.splice(editKey, 1, { prongs });
+                  return newKeys;
+                })
+                const nextIndex = editKey + 1;
+                if (nextIndex > currentKeys.length - 1) {
+                  setEditKey(-1);
+                } else {
+                  setEditKey(nextIndex);
+                }
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
-};
-
-export default KeyPicker;
+}

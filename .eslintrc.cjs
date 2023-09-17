@@ -25,12 +25,13 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
     'react/react-in-jsx-scope': 0,
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     curly: [2, 'all'],
     'react/no-array-index-key': 1,
     'arrow-parens': [2, 'as-needed'],
+    'max-len': 1,
   },
 };

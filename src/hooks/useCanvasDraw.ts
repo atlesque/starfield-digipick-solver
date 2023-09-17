@@ -30,12 +30,15 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // HDPI
+    const scale = devicePixelRatio;
+
     // Center points of circle
     const x = canvas.width / 2;
     const y = canvas.height / 2;
 
     // Radius of ring with some padding
-    const radius = canvas.height / 2 - 10;
+    const radius = canvas.height / 2 - 10 * scale;
 
     // Set origin to north (0 = East, 2*PI = 360deg)
     const origin = 1.5 * PI;
@@ -52,14 +55,14 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
       for (let i = 1; i <= MAX_PRONGS; i++) {
         const offset = (i - 1) * prongOffsetSize;
         if (prongs.has(i)) {
-          ctx.lineWidth = 13;
+          ctx.lineWidth = 13 * scale;
           ctx.strokeStyle = (() => {
             if (isPuzzle) return COLOR_PUZZLE_PRONG;
 
             return COLOR_PRONG;
           })()
         } else {
-          ctx.lineWidth = isPuzzle ? 13 : 7;
+          ctx.lineWidth = (isPuzzle ? 13 : 7) * scale;
           ctx.strokeStyle = (() => {
             if (isPuzzle && !solved && activeLayer === (depth + 1).toString()) {
               return COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE;
@@ -77,7 +80,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
           })();
         }
         ctx.beginPath();
-        ctx.arc(x, y, radius - (depth * 20), origin - prongWidth + offset, origin + prongWidth + offset);
+        ctx.arc(x, y, radius - (depth * 20 * scale), origin - prongWidth + offset, origin + prongWidth + offset);
         ctx.stroke();
 
         if (isPuzzle && guides && i % 2 === 0) {
@@ -89,7 +92,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
           ctx.moveTo(x1, y1);
           ctx.lineTo(x2, y2);
           ctx.strokeStyle = 'orange';
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 2 * scale;
           ctx.stroke();
         }
       }
@@ -132,13 +135,13 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
           const averageAngle = (start + end) / 2;
 
           // Calculate the x and y coordinates
-          const textX = x + (gapRadius + 10) * Math.cos(averageAngle);
-          const textY = y + (gapRadius + 10) * Math.sin(averageAngle);
+          const textX = x + (gapRadius + 10 * (scale == 1 ? 1 : scale / 1.5)) * Math.cos(averageAngle);
+          const textY = y + (gapRadius + 10 * (scale == 1 ? 1 : scale / 1.5)) * Math.sin(averageAngle);
 
           const gapSize = b - a;
           if (gapSize > 2) {
             ctx.fillStyle = color;
-            ctx.font = '12px Courier New';
+            ctx.font = `${Math.max(12, 12 * (devicePixelRatio / 1.2))}px Courier New`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(gapSize.toString(), textX, textY);

@@ -16,9 +16,12 @@ export const useCanvasManager = (opts: DrawOptions) => {
     canvasRef.current.height = 0;
 
     const rect = wrapperRef.current.getBoundingClientRect();
+    const dpr = window.devicePixelRatio ?? 1;
 
-    canvasRef.current.width = Math.floor(rect.width);
-    canvasRef.current.height = Math.floor(rect.width);
+    canvasRef.current.width = Math.floor(rect.width) * dpr;
+    canvasRef.current.height = Math.floor(rect.width) * dpr;
+    canvasRef.current.style.width = `${Math.floor(rect.width)}px`;
+    canvasRef.current.style.height = `${Math.floor(rect.width)}px`;
 
     draw();
   }, [draw]);

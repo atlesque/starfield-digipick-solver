@@ -29,13 +29,13 @@ export const useCanvasEventTransformers = (
 
   const onStart = useCallback((x: number, y: number, touch: boolean = false) => {
     if (!canvasRef.current) return;
-    const center = canvasRef.current.width / 2;
+    const center = canvasRef.current.width / 2 / devicePixelRatio;
     setProng(() => getProngNumber(x, y, center, activeLayer, touch));
   }, [activeLayer])
 
   const onMove = useCallback((x: number, y: number, touch: boolean = false) => {
     if (!canvasRef.current) return;
-    const center = canvasRef.current.width / 2;
+    const center = canvasRef.current.width / 2 / devicePixelRatio;
     setProng(() => getProngNumber(x, y, center, activeLayer, touch));
   }, [activeLayer])
 

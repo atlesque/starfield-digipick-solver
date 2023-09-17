@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { DrawOptions, useCanvasDraw } from './useCanvasDraw';
-import { useCanvasEdit } from './useCanvasEdit';
+import useCanvasEdit from './useCanvasEdit';
 
-export const useCanvasManager = (opts: DrawOptions) => {
+const useCanvasManager = (opts: DrawOptions) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLButtonElement>(null);
 
   const { draw } = useCanvasDraw(canvasRef, opts);
   useCanvasEdit(canvasRef, opts.isPuzzle);
 
   const onResize = useCallback(() => {
-    if (!wrapperRef.current || !canvasRef.current) return;
+    if (!wrapperRef.current || !canvasRef.current) {
+      return;
+    }
 
     canvasRef.current.width = 0;
     canvasRef.current.height = 0;
@@ -30,16 +32,18 @@ export const useCanvasManager = (opts: DrawOptions) => {
     onResize();
     // Intentionally exclude onResize from dependencies.
     // We only want this to be called on initial layout render.
-  }, [])
+  }, [onResize]);
 
   useEffect(() => {
     const resize = () => requestAnimationFrame(onResize);
     window.addEventListener('resize', resize);
-    () => window.removeEventListener('resize', resize);
-  }, [onResize])
+    return () => window.removeEventListener('resize', resize);
+  }, [onResize]);
 
   return {
     canvasRef,
-    wrapperRef
-  }
-}
+    wrapperRef,
+  };
+};
+
+export default useCanvasManager;

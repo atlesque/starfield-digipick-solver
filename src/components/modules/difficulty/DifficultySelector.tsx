@@ -7,23 +7,24 @@ interface DifficultySelectorProps {
   onChange: (difficulty: Difficulty) => void;
 }
 
-export const DifficultySelector = ({ activeDifficulty, onChange }: DifficultySelectorProps) => {
-  return (
-    <div className={styles.root}>
-      <h1 className={styles.title}>Security level</h1>
-      <div className={styles.difficultyList}>
-        {Object.values(Difficulty).map(difficulty => (
-          <button
-            key={difficulty}
-            className={clsx(styles.difficulty, {
-              [styles.activeDifficulty]: difficulty === activeDifficulty,
-            })}
-            onClick={() => onChange(difficulty)}
-          >
-            {difficulty}
-          </button>
-        ))}
-      </div>
+const DifficultySelector = ({ activeDifficulty, onChange }: DifficultySelectorProps) => (
+  <div className={styles.root}>
+    <h1 className={styles.title}>Security level</h1>
+    <div className={styles.difficultyList}>
+      {Object.values(Difficulty).map(difficulty => (
+        <button
+          type="button"
+          key={difficulty}
+          className={clsx(styles.difficulty, {
+            [styles.activeDifficulty]: difficulty === activeDifficulty,
+          })}
+          onClick={() => onChange(difficulty)}
+        >
+          {difficulty}
+        </button>
+      ))}
     </div>
-  );
-};
+  </div>
+);
+
+export default DifficultySelector;

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { AutoSolverContext } from '../context/AutoSolverContext';
 
-export const useAutoSolver = () => {
-  return useContext(AutoSolverContext);
-};
+const useAutoSolver = () => useContext(AutoSolverContext);
+
+export default useAutoSolver;

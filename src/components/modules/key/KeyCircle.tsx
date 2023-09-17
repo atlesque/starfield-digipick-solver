@@ -12,7 +12,7 @@ interface KeyCircleProps {
   onVerifyChange: (isVerified: boolean) => void;
 }
 
-export const KeyCircle = ({
+const KeyCircle = ({
   activeLayerNumber,
   filteredLayer = 0,
   totalLayers,
@@ -34,12 +34,14 @@ export const KeyCircle = ({
 
   return (
     <button
+      type="button"
       className={clsx(styles.root, {
         [styles.layerUnknown]: activeLayerNumber === 0,
         [styles.isOpaque]: filteredLayer !== activeLayerNumber && filteredLayer !== 0,
         [styles.isHidden]: isHidden,
         [styles.isVerified]: isVerified,
       })}
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...handleLongPress()}
     >
       <span className={styles.activeLayerNumber}>
@@ -62,3 +64,5 @@ export const KeyCircle = ({
     </button>
   );
 };
+
+export default KeyCircle;

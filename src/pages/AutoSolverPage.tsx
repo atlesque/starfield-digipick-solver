@@ -7,6 +7,7 @@ import { useAutoSolver } from '../hooks/useAutoSolver';
 import { Button } from '../components/modules/button/Button';
 import { ErrorMessage } from '../components/modules/errorMessage/ErrorMessage';
 import { Link } from 'react-router-dom';
+import { AppRoutes } from '../routes';
 
 export const AutoSolverPage = () => {
   const {
@@ -76,7 +77,7 @@ export const AutoSolverPage = () => {
         <KeyPicker />
       )}
       <div className={styles.footerLinkWrapper}>
-        <Link to="/" className="link">
+        <Link to={AppRoutes.Home} className="link">
           Back to manual solver
         </Link>
       </div>

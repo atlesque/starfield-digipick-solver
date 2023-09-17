@@ -14,7 +14,7 @@ export const Footer = () => {
         </a>
       </span>
       {location.pathname !== AppRoutes.Help && (
-        <Link to="/help" className={styles.helpLink}>
+        <Link to={AppRoutes.Help} className={styles.helpLink}>
           Help
         </Link>
       )}

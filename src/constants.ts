@@ -31,3 +31,7 @@ export const MAX_KEYS = TOTAL_KEYS_BY_DIFFICULTY[Difficulty.Master];
 
 // NON-ZERO-INDEXED
 export const MAX_PRONGS = 32;
+
+export const LOCAL_STORAGE_ACTIVE_DIFFICULTY = 'activeDifficulty';
+export const LOCAL_STORAGE_FILTERED_LAYER = 'filteredLayer';
+export const LOCAL_STORAGE_KEY_CIRCLES = 'keyCircles';

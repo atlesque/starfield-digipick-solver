@@ -38,7 +38,7 @@ export const HelpPage = () => {
           <li>Click RESET to start anew</li>
         </ul>
         <h2>Auto-solver</h2>
-        <Link to="/auto-solver" className="link">
+        <Link to={AppRoutes.AutoSolver} className="link">
           Try the new auto solver!
         </Link>
         <p>

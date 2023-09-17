@@ -30,6 +30,8 @@ module.exports = {
     'spaced-comment': 'error',
     quotes: ['error', 'single'],
     'no-duplicate-imports': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    curly: ['error', 'all'],
   },
   settings: {
     'import/resolver': {

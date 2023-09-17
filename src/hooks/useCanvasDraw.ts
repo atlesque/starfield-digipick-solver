@@ -1,46 +1,34 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { MAX_PRONGS } from '../constants';
-import useAutoSolver from './useAutoSolver';
-import {
-  COLOR_GAP_GREEN,
-  COLOR_GAP_WHITE,
-  COLOR_NO_PRONG,
-  COLOR_PRONG,
-  COLOR_PUZZLE_NO_PRONG,
-  COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE,
-  COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE,
-  COLOR_PUZZLE_PRONG,
-} from '../styles/palette';
+import { useCallback, useEffect, useMemo } from 'react'
+import { MAX_PRONGS } from '../constants'
+import { useAutoSolver } from './useAutoSolver'
+import { COLOR_GAP_GREEN, COLOR_GAP_WHITE, COLOR_NO_PRONG, COLOR_PRONG, COLOR_PUZZLE_NO_PRONG, COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE, COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE, COLOR_PUZZLE_PRONG } from '../styles/palette'
 
 export interface DrawOptions {
-  prongs: number[];
-  isPuzzle?: boolean;
-  illustrateGaps?: boolean;
+  prongs: number[]
+  isPuzzle?: boolean
+  illustrateGaps?: boolean
 }
 
-const { PI } = Math;
+const PI = Math.PI;
 
-export const useCanvasDraw = (
-  canvasRef: React.RefObject<HTMLCanvasElement>,
-  { prongs, isPuzzle, illustrateGaps }: DrawOptions
-) => {
+export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
+  prongs,
+  isPuzzle,
+  illustrateGaps
+}: DrawOptions) => {
   const { puzzle, solved, activeLayer, guides, gapIllustrationMode } = useAutoSolver();
 
   const prongMap = useMemo(() => {
     const s = new Set<number>();
-    prongs.forEach(prong => s.add(prong));
+    prongs.forEach(prong => s.add(prong))
     return s;
   }, [prongs]);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      return;
-    }
+    if (!ctx) return;
 
     // HDPI
     const scale = devicePixelRatio;
@@ -56,25 +44,23 @@ export const useCanvasDraw = (
     const origin = 1.5 * PI;
 
     // Individual prong offset size is 360deg / max prongs
-    const prongOffsetSize = (2 * PI) / MAX_PRONGS;
+    const prongOffsetSize = 2 * PI / MAX_PRONGS;
 
     // Prong width
     const prongWidth = isPuzzle ? 0.08 : 0.06;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const renderProngs = (newProngs: Set<number>, depth: number = 0) => {
+    const renderProngs = (prongs: Set<number>, depth: number = 0) => {
       // 1-32
-      for (let i = 1; i <= MAX_PRONGS; i += 1) {
+      for (let i = 1; i <= MAX_PRONGS; i++) {
         const offset = (i - 1) * prongOffsetSize;
-        if (newProngs.has(i)) {
+        if (prongs.has(i)) {
           ctx.lineWidth = 13 * scale;
           ctx.strokeStyle = (() => {
-            if (isPuzzle) {
-              return COLOR_PUZZLE_PRONG;
-            }
+            if (isPuzzle) return COLOR_PUZZLE_PRONG;
 
             return COLOR_PRONG;
-          })();
+          })()
         } else {
           ctx.lineWidth = (isPuzzle ? 13 : 7) * scale;
           ctx.strokeStyle = (() => {
@@ -94,19 +80,13 @@ export const useCanvasDraw = (
           })();
         }
         ctx.beginPath();
-        ctx.arc(
-          x,
-          y,
-          radius - depth * 20 * scale,
-          origin - prongWidth + offset,
-          origin + prongWidth + offset
-        );
+        ctx.arc(x, y, radius - (depth * 20 * scale), origin - prongWidth + offset, origin + prongWidth + offset);
         ctx.stroke();
 
         if (isPuzzle && guides && i % 2 === 0) {
           ctx.beginPath();
-          const x1 = x + (radius * Math.cos(origin + offset)) / 3;
-          const y1 = y + (radius * Math.sin(origin + offset)) / 3;
+          const x1 = x + radius * Math.cos(origin + offset) / 3;
+          const y1 = y + radius * Math.sin(origin + offset) / 3;
           const x2 = x + radius * Math.cos(origin + offset);
           const y2 = y + radius * Math.sin(origin + offset);
           ctx.moveTo(x1, y1);
@@ -118,9 +98,8 @@ export const useCanvasDraw = (
       }
 
       if (illustrateGaps && gapIllustrationMode !== 'none') {
-        const ordered: number[] = [];
-        // eslint-disable-next-line no-restricted-syntax
-        for (const p of newProngs.keys()) {
+        let ordered: number[] = [];
+        for (const p of prongs.keys()) {
           ordered.push(p);
         }
         ordered.sort((a, b) => a - b);
@@ -128,7 +107,7 @@ export const useCanvasDraw = (
         ordered.forEach((p, i) => {
           const gap = 0.12;
           const a = p - 1;
-          const b = (ordered[i + 1] ?? ordered[0] + MAX_PRONGS) - 1;
+          const b = (ordered[i + 1] ?? (ordered[0] + MAX_PRONGS)) - 1;
           const start = origin + a * prongOffsetSize + gap;
           const end = origin + b * prongOffsetSize - gap;
           const gapRadius = radius - 9;
@@ -139,11 +118,11 @@ export const useCanvasDraw = (
           const color = (() => {
             if (ordered.length === 3) {
               return i === 0 ? COLOR_GAP_GREEN : COLOR_GAP_WHITE;
-            }
-            if (ordered.length === 2) {
+            } else if (ordered.length === 2) {
               return COLOR_GAP_WHITE;
+            } else {
+              return i % 2 === 0 ? COLOR_GAP_GREEN : COLOR_GAP_WHITE;
             }
-            return i % 2 === 0 ? COLOR_GAP_GREEN : COLOR_GAP_WHITE;
           })();
           ctx.strokeStyle = color;
           ctx.stroke();
@@ -151,15 +130,13 @@ export const useCanvasDraw = (
           if (gapIllustrationMode !== 'numbers') {
             return;
           }
-
+          
           // Calculate the average angle
           const averageAngle = (start + end) / 2;
 
           // Calculate the x and y coordinates
-          const textX =
-            x + (gapRadius + 10 * (scale === 1 ? 1 : scale / 1.5)) * Math.cos(averageAngle);
-          const textY =
-            y + (gapRadius + 10 * (scale === 1 ? 1 : scale / 1.5)) * Math.sin(averageAngle);
+          const textX = x + (gapRadius + 10 * (scale == 1 ? 1 : scale / 1.5)) * Math.cos(averageAngle);
+          const textY = y + (gapRadius + 10 * (scale == 1 ? 1 : scale / 1.5)) * Math.sin(averageAngle);
 
           const gapSize = b - a;
           if (gapSize > 2) {
@@ -171,8 +148,8 @@ export const useCanvasDraw = (
           }
         });
       }
-    };
-
+    }
+    
     if (!isPuzzle) {
       renderProngs(prongMap);
     } else {
@@ -180,25 +157,15 @@ export const useCanvasDraw = (
         const set = new Set<number>();
         layer.forEach(n => set.add(n));
         renderProngs(set, i);
-      });
+      })
     }
-  }, [
-    canvasRef,
-    prongMap,
-    isPuzzle,
-    puzzle,
-    solved,
-    activeLayer,
-    guides,
-    illustrateGaps,
-    gapIllustrationMode,
-  ]);
+  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer, guides, illustrateGaps, gapIllustrationMode]);
 
   useEffect(() => {
     draw();
   }, [draw]);
 
   return {
-    draw,
-  };
-};
+    draw
+  }
+}

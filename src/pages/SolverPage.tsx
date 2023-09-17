@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import KeyCircle from '../components/modules/key/KeyCircle';
+import { KeyCircle } from '../components/modules/key/KeyCircle';
 import {
   Difficulty,
   LOCAL_STORAGE_ACTIVE_DIFFICULTY,
@@ -11,8 +10,9 @@ import {
   TOTAL_LAYERS_BY_DIFFICULTY,
 } from '../constants';
 import styles from './SolverPage.module.scss';
-import Settings from '../components/modules/settings/Settings';
-import AppRoutes from '../routes';
+import { Settings } from '../components/modules/settings/Settings';
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../routes';
 
 interface KeyCircleConfig {
   activeLayerNumber: number;
@@ -34,7 +34,6 @@ const getSavedActiveDifficulty = (): Difficulty | undefined => {
       return parsedSavedActiveDifficulty as Difficulty;
     }
   }
-  return undefined;
 };
 
 const getSavedFilteredLayer = (): number | undefined => {
@@ -45,7 +44,6 @@ const getSavedFilteredLayer = (): number | undefined => {
       return parsedSavedFilteredLayer;
     }
   }
-  return undefined;
 };
 
 const getSavedKeyCircles = (): KeyCircleConfig[] | undefined => {
@@ -56,10 +54,9 @@ const getSavedKeyCircles = (): KeyCircleConfig[] | undefined => {
       return parsedSavedKeyCircles;
     }
   }
-  return undefined;
 };
 
-const SolverPage = () => {
+export const SolverPage = () => {
   const [activeDifficulty, setActiveDifficulty] = useState(
     getSavedActiveDifficulty() ?? Difficulty.Novice
   );
@@ -77,8 +74,8 @@ const SolverPage = () => {
   };
 
   const handleKeyCircleLayerChange = (keyNumber: number, newLayer: number) => {
-    setKeyCircles(oldKeyCircles => {
-      const newKeyCircles = [...oldKeyCircles];
+    setKeyCircles(keyCircles => {
+      const newKeyCircles = [...keyCircles];
       newKeyCircles[keyNumber] = {
         ...newKeyCircles[keyNumber],
         activeLayerNumber: newLayer,
@@ -88,8 +85,8 @@ const SolverPage = () => {
   };
 
   const handleKeyCircleVerifyChange = (keyNumber: number, isVerified: boolean) => {
-    setKeyCircles(oldKeyCircles => {
-      const newKeyCircles = [...oldKeyCircles];
+    setKeyCircles(keyCircles => {
+      const newKeyCircles = [...keyCircles];
       newKeyCircles[keyNumber] = {
         ...newKeyCircles[keyNumber],
         isVerified,
@@ -123,8 +120,8 @@ const SolverPage = () => {
             totalLayers={totalLayers}
             isHidden={i >= totalKeys}
             isVerified={keyCircleConfig.isVerified}
-            onActiveLayerChange={(newLayer: number) => handleKeyCircleLayerChange(i, newLayer)}
-            onVerifyChange={(isVerified: boolean) => handleKeyCircleVerifyChange(i, isVerified)}
+            onActiveLayerChange={newLayer => handleKeyCircleLayerChange(i, newLayer)}
+            onVerifyChange={isVerified => handleKeyCircleVerifyChange(i, isVerified)}
           />
         ))}
       </div>
@@ -137,5 +134,3 @@ const SolverPage = () => {
     </div>
   );
 };
-
-export default SolverPage;

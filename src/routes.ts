@@ -1,7 +1,5 @@
-enum AppRoutes {
+export enum AppRoutes {
   Home = '/',
   Help = '/help',
-  AutoSolver = '/auto-solver',
+  AutoSolver = '/auto-solver'
 }
-
-export default AppRoutes;

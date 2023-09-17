@@ -1,44 +1,40 @@
-import clsx from 'clsx';
-import styles from './Key.module.scss';
-import useCanvasManager from '../../../hooks/useCanvasManager';
-import useAutoSolver from '../../../hooks/useAutoSolver';
+import styles from './Key.module.scss'
+import { useCanvasManager } from '../../../hooks/useCanvasManager'
+import clsx from 'clsx'
+import { useAutoSolver } from '../../../hooks/useAutoSolver'
 
 interface KeyProps {
-  prongs?: number[];
-  isPuzzle?: boolean;
-  illustrateGaps?: boolean;
-  layer?: string;
-  active?: boolean;
-  onClick?: (prongs: number[]) => void;
+  prongs?: number[]
+  isPuzzle?: boolean
+  illustrateGaps?: boolean
+  layer?: string
+  rotation?: number
+  active?: boolean
+  onClick?: (prongs: number[]) => void
 }
-
-const Key = ({
+export const Key = ({
   prongs = [],
   isPuzzle = false,
   illustrateGaps = false,
+  rotation: _rotation = 0,
   layer,
   active = false,
-  onClick,
+  onClick
 }: KeyProps) => {
   const { canvasRef, wrapperRef } = useCanvasManager({
     prongs,
     isPuzzle,
-    illustrateGaps,
+    illustrateGaps
   });
 
   const { activeLayer, solved } = useAutoSolver();
 
   return (
-    <button
-      type="button"
-      ref={wrapperRef}
-      onClick={() => onClick && onClick(prongs)}
-      className={clsx(styles.root, {
-        [styles.active]: active,
-        [styles.hidden]: !isPuzzle && solved && !!activeLayer && activeLayer !== layer,
-        [styles.unused]: !isPuzzle && solved && activeLayer !== 'X' && layer === 'X',
-      })}
-    >
+    <div ref={wrapperRef} onClick={() => onClick && onClick(prongs)} className={clsx(styles.root, {
+      [styles.active]: active,
+      [styles.hidden]: !isPuzzle && solved && !!activeLayer && activeLayer !== layer,
+      [styles.unused]: !isPuzzle && solved && activeLayer !== 'X' && layer === 'X'
+    })}>
       <canvas ref={canvasRef} />
       {!prongs.length && !isPuzzle && (
         <div className={styles.warning}>
@@ -55,8 +51,6 @@ const Key = ({
           <span>{layer}</span>
         </div>
       )}
-    </button>
-  );
-};
-
-export default Key;
+    </div>
+  )
+}

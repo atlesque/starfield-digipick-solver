@@ -3,6 +3,7 @@ import { Difficulty, TOTAL_KEYS_BY_DIFFICULTY, TOTAL_LAYERS_BY_DIFFICULTY } from
 import { DigiKey } from '../types/DigiKey';
 import { Puzzle } from '../types/Puzzle';
 import { solvePuzzle } from '../utils/solvePuzzle';
+import { NotSolveableError } from '../errors/NotSolveableError';
 
 type gapIllustrationMode = 'visual' | 'numbers' | 'none';
 interface AutoSolverContextValue {
@@ -113,7 +114,15 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
         setActiveLayer('');
         setSolved(true);
       } catch (e) {
-        throw new Error('This puzzle is not solveable. Ensure you have entered everything correctly!');
+        if (e instanceof NotSolveableError) {
+          setKeys(e.keys);
+        }
+        throw new Error(
+          'This puzzle is not solveable. ' +
+          'Ensure you have entered everything correctly! ' +
+          'Keys that don\'t fit into the puzzle are marked with a yellow question mark. ' +
+          'These may be the culprit, but some puzzles come with keys intentionally meant to distract.'
+        );
       }
     } catch (e) {
       if (!(e instanceof Error)) return;
@@ -125,7 +134,7 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
     if (!error) {
       return;
     }
-    const timeout = setTimeout(() => setError(''), 6000);
+    const timeout = setTimeout(() => setError(''), 8000);
     return () => clearTimeout(timeout);
   }, [error]);
 

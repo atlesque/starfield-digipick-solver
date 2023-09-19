@@ -46,7 +46,12 @@ export const Key = ({
           <span>X</span>
         </div>
       )}
-      {layer !== 'X' && !!layer && (
+      {layer === '?' && (
+        <div className={clsx(styles.warning, styles.unknown)}>
+          <span>?</span>
+        </div>
+      )}
+      {layer !== 'X' && layer !== '?' && !!layer && (
         <div className={clsx(styles.warning, styles.success)}>
           <span>{layer}</span>
         </div>

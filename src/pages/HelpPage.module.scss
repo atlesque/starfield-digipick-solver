@@ -28,11 +28,29 @@
   }
 
   h2 {
+    border-bottom: 1px solid var(--info-dark);
     font-size: var(--font-size-h3);
   }
 
+  h3 {
+    font-size: var(--font-size-h4);
+    border-bottom: 1px solid var(--gray-dark);
+  }
+
   ul {
-    list-style-type: number;
+    list-style: disc;
+    padding-left: var(--spacing-2);
+
+    &.tips {
+      background-color: var(--background-light);
+      padding: var(--spacing-half) var(--spacing-4);
+      border: 1px solid rgba(0,0,0,0.3);
+      border-radius: var(--spacing-half);
+    }
+  }
+
+  ol {
+    list-style: number;
     padding-left: var(--spacing-2);
   }
 }

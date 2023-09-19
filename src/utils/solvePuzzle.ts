@@ -3,6 +3,8 @@ import { DigiKey } from '../types/DigiKey';
 import { Puzzle } from '../types/Puzzle';
 import { rotateKey } from './rotateKey';
 import { MAX_PRONGS } from '../constants';
+import { NotSolveableError } from '../errors/NotSolveableError';
+import { PathNotFoundError } from '../errors/PathNotFoundError';
 
 interface Key extends DigiKey {
   id: number;
@@ -47,35 +49,44 @@ const findPath = (
     }
   }
   
-  throw new Error('No path found :(');
+  throw new PathNotFoundError();
 }
 
 export const solvePuzzle = (puzzle: Puzzle, _keys: DigiKey[]): DigiKey[] => {
   const keys: Key[] = _keys.map((k, id) => ({ id, layers: getValidPositionsByLayer(k.prongs, puzzle.layers), prongs: k.prongs }));
   
-  const path = findPath(keys, '|', 0, puzzle, new Set<string>())
-
-  const solvedKeys = path.split('|').filter(f => f).map((stringKey) => {
-    const [layer, id, ...prongs] = stringKey.split('-');
-    return {
-      id: Number(id),
-      prongs: prongs.map(p => Number(p)),
-      layer: Number(layer)
-    }
-  });
+  try {
+    const path = findPath(keys, '|', 0, puzzle, new Set<string>())
+    const solvedKeys = path.split('|').filter(f => f).map((stringKey) => {
+      const [layer, id, ...prongs] = stringKey.split('-');
+      return {
+        id: Number(id),
+        prongs: prongs.map(p => Number(p)),
+        layer: Number(layer)
+      }
+    });
+    return _keys.map((key, id) => {
+      const sKey = solvedKeys.find(k => k.id === id);
   
-  return _keys.map((key, id) => {
-    const sKey = solvedKeys.find(k => k.id === id);
-
-    if (!sKey) {
-      return { ...key, layer: 'X' };
+      if (!sKey) {
+        return { ...key, layer: 'X' };
+      }
+  
+      return {
+        prongs: sKey.prongs,
+        layer: (sKey.layer + 1).toString()
+      }
+    });
+  } catch (e) {
+    if (e instanceof PathNotFoundError) {
+      throw new NotSolveableError(e.message, _keys.map((k, i) => ({
+        ...k,
+        layer: keys[i].layers.every(l => !l.length) ? '?' : undefined
+      })))
     }
 
-    return {
-      prongs: sKey.prongs,
-      layer: (sKey.layer + 1).toString()
-    }
-  });
+    throw e;
+  }
 };
 
 /* UTILITIES */

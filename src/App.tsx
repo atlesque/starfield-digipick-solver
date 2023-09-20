@@ -9,7 +9,7 @@ import './styles/shadows.scss';
 import './styles/typography.scss';
 import { SolverPage } from './pages/SolverPage';
 import Footer from './components/shared/Footer';
-import { HelpPage } from './pages/HelpPage';
+import HelpPage from './pages/HelpPage';
 import { AppRoutes } from './routes';
 import { AutoSolverPage } from './pages/AutoSolverPage';
 

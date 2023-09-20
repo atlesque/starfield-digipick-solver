@@ -88,8 +88,6 @@ export const AutoSolverProvider = ({ children }: PropsWithChildren) => {
   }, [puzzle, keys])
 
   const onReset = useCallback(() => {
-    const ok = confirm('Are you sure you want to reset?');
-    if (!ok) return;
     setKeys(Array.from<unknown, DigiKey>({ length: TOTAL_KEYS_BY_DIFFICULTY[difficulty] }, () => ({
       prongs: [],
       rotation: 0

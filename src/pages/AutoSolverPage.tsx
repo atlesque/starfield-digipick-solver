@@ -8,6 +8,8 @@ import { Button } from '../components/modules/button/Button';
 import { ErrorMessage } from '../components/modules/errorMessage/ErrorMessage';
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../routes';
+import { Confirm } from '../components/shared/modal/Confirm';
+import { useCallback, useState } from 'react';
 
 export const AutoSolverPage = () => {
   const {
@@ -24,12 +26,25 @@ export const AutoSolverPage = () => {
     setActiveLayer,
   } = useAutoSolver();
 
+  const [showConfirmReset, setShowConfirmReset] = useState(false);
+  const onConfirmReset = useCallback(() => {
+    setShowConfirmReset(false);
+    onReset();
+  }, []);
+
   return (
     <div className={styles.root}>
+      <Confirm
+        title="Are you sure?"
+        prompt="This action presently can't be undone."
+        open={showConfirmReset}
+        onConfirm={onConfirmReset}
+        onCancel={() => setShowConfirmReset(false)}
+      />
       <Settings
         activeDifficulty={difficulty}
         setActiveDifficulty={setDifficulty}
-        handleResetClick={onReset}
+        handleResetClick={() => setShowConfirmReset(true)}
       />
       {editKey === -1 ? (
         <>
@@ -46,7 +61,7 @@ export const AutoSolverPage = () => {
                 &lt;
               </Button>
             )}
-            <Button primary={!solved} disabled={solved} onClick={solved ? onReset : onSolve}>
+            <Button primary={!solved} disabled={solved} onClick={solved ? () => setShowConfirmReset(true) : onSolve}>
               {solved ? 'Start Over' : 'Solve Puzzle'}
             </Button>
             {!solved && (

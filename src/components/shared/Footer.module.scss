@@ -9,26 +9,19 @@
   margin-left: auto;
   margin-right: auto;
   align-items: center;
+  gap: var(--spacing);
 
   a {
     color: var(--text-primary);
   }
 }
 
-.discord {
-  a {
-    text-decoration: none;
-  }
+.discordLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+}
 
-  button {
-    font-size: var(--font-size-h5);
-    padding: 0 var(--spacing-half);
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-
-    svg {
-      margin-right: var(--spacing-half);
-    }
-  }
+.discordIcon {
+  width: 18px;
 }

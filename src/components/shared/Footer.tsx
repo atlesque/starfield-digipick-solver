@@ -1,28 +1,28 @@
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Footer.module.scss';
 import { AppRoutes } from '../../routes';
-import { Button } from '../modules/button/Button';
-import { Discord } from './icons/Discord';
+import DiscordIcon from './icons/DiscordIcon';
 
-export const Footer = () => {
+const Footer = () => {
   const location = useLocation();
 
   return (
     <div className={styles.root}>
       <span>
         Made with ✨ by{' '}
-        <a href="https://atlesque.dev/" target="_blank">
+        <a href="https://atlesque.dev/" target="_blank" rel="noreferrer">
           Atlesque
         </a>
       </span>
-      <span className={styles.discord}>
-        <a href="https://discord.gg/tE8rJYJ3ae" target="_blank">
-          <Button>
-            <Discord />
-            Join our Discord!
-          </Button>
-        </a>
-      </span>
+      <a
+        href="https://discord.gg/tE8rJYJ3ae"
+        target="_blank"
+        rel="noreferrer"
+        className={styles.discordLink}
+      >
+        <DiscordIcon className={styles.discordIcon} />
+        Join our Discord!
+      </a>
       {location.pathname !== AppRoutes.Help && (
         <Link to={AppRoutes.Help} className={styles.helpLink}>
           Help
@@ -31,3 +31,5 @@ export const Footer = () => {
     </div>
   );
 };
+
+export default Footer;

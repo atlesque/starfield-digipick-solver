@@ -46,5 +46,6 @@ module.exports = {
     'function-paren-newline': 0,
     'operator-linebreak': 0,
     'react/jsx-curly-newline': 0,
+    'react/jsx-props-no-spreading': 0,
   },
 };

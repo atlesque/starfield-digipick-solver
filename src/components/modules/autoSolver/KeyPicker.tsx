@@ -1,9 +1,10 @@
 import { Key } from './Key';
 import styles from './KeyPicker.module.scss'
 import { Button } from '../button/Button';
-import { useKeyPicker } from './useKeyPicker';
+import { quickKeys, useKeyPicker } from './useKeyPicker';
 import { useAutoSolver } from '../../../hooks/useAutoSolver';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
+import { KeyBuilder } from './KeyBuilder';
 
 export const KeyPicker = () => {
   const { 
@@ -32,6 +33,20 @@ export const KeyPicker = () => {
     return [a, b];
   }, [[], []]), [options]);
 
+  const onAddKey = useCallback((prongs: number[]) => {
+    setKeys(k => {
+      const newKeys = [...k];
+      newKeys.splice(editKey, 1, { prongs });
+      return newKeys;
+    })
+    const nextIndex = editKey + 1;
+    if (nextIndex > currentKeys.length - 1) {
+      setEditKey(-1);
+    } else {
+      setEditKey(nextIndex);
+    }
+  }, [editKey, currentKeys]);
+
   return (
     <div className={styles.root}>
       <div className={styles.status}>
@@ -49,13 +64,26 @@ export const KeyPicker = () => {
         <Button onClick={() => setEditKey(-1)}>BACK</Button>
         <Button onClick={() => setEditKey(r => Math.min(r + 1, currentKeys.length - 1))}>&gt;</Button>
       </div>
+      <div className={styles.commonKeys}>
+        <h3>Common Keys</h3>
+        <div className={styles.keys}>
+          {quickKeys.map((key, i) => (
+            <Key
+              key={i}
+              prongs={key.prongs}
+              onClick={onAddKey}
+            />
+          ))}
+        </div>
+      </div>
       <div className={styles.quantityContainer}>
         {[0, 2, 3, 4].map((n) => (
           <Button
             onClick={() => setProngQuantity(n)}
+            primary={n === prongQuantity}
             key={n}
           >
-            {n === 0 ? 'Basic' : `${n} Prongs`}
+            {n === 0 ? 'Manual' : `${n} Prongs`}
           </Button>
         ))}
       </div>
@@ -88,31 +116,33 @@ export const KeyPicker = () => {
           )}
         </div>
       )}
-      <div className={styles.gapIllustration}>
-        <Button
-          onClick={() => {
-            if (gapIllustrationMode === 'none') {
-              setGapIllustrationMode('visual');
-            } else if (gapIllustrationMode === 'visual') {
-              setGapIllustrationMode('numbers');
-            } else {
-              setGapIllustrationMode('none');
-            }
-          }}
-        >
-          {(() => {
-            if (gapIllustrationMode === 'none') {
-              return 'Show Gap Lines';
-            }
+      {prongQuantity !== 0 && (
+        <div className={styles.gapIllustration}>
+          <Button
+            onClick={() => {
+              if (gapIllustrationMode === 'none') {
+                setGapIllustrationMode('visual');
+              } else if (gapIllustrationMode === 'visual') {
+                setGapIllustrationMode('numbers');
+              } else {
+                setGapIllustrationMode('none');
+              }
+            }}
+          >
+            {(() => {
+              if (gapIllustrationMode === 'none') {
+                return 'Show Gap Lines';
+              }
 
-            if (gapIllustrationMode === 'numbers') {
-              return 'Hide Gap Helpers';
-            }
+              if (gapIllustrationMode === 'numbers') {
+                return 'Hide Gap Helpers';
+              }
 
-            return 'Show Gap Distances';
-          })()}
-        </Button>
-      </div>
+              return 'Show Gap Distances';
+            })()}
+          </Button>
+        </div>
+      )}
       <div className={styles.keys}>
         {keys.map(({ prongs }, i) => {
           return (
@@ -120,23 +150,16 @@ export const KeyPicker = () => {
               key={i}
               illustrateGaps={prongQuantity !== 0}
               prongs={prongs}
-              onClick={(prongs) => {
-                setKeys(k => {
-                  const newKeys = [...k];
-                  newKeys.splice(editKey, 1, { prongs });
-                  return newKeys;
-                })
-                const nextIndex = editKey + 1;
-                if (nextIndex > currentKeys.length - 1) {
-                  setEditKey(-1);
-                } else {
-                  setEditKey(nextIndex);
-                }
-              }}
+              onClick={onAddKey}
             />
           );
         })}
       </div>
+      {prongQuantity === 0 && (
+        <KeyBuilder
+          onAddKey={onAddKey}
+        />
+      )}
     </div>
   );
 }

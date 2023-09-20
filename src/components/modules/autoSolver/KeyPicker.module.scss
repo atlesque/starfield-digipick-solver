@@ -16,6 +16,21 @@
   grid-gap: var(--spacing);
 }
 
+.commonKeys {
+  width: 100%;
+  max-width: calc(500px - var(--spacing) - var(--spacing));
+  padding: var(--spacing);
+  background-color: rgba(255,255,255,0.04);
+  border-radius: var(--spacing-half);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+
+  .keys {
+    max-width: unset;
+  }
+}
+
 .quantityContainer {
   width: 100%;
   display: grid;

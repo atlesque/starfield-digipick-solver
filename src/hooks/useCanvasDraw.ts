@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react'
 import { MAX_PRONGS } from '../constants'
 import { useAutoSolver } from './useAutoSolver'
 import { COLOR_GAP_GREEN, COLOR_GAP_WHITE, COLOR_NO_PRONG, COLOR_PRONG, COLOR_PUZZLE_NO_PRONG, COLOR_PUZZLE_NO_PRONG_LAYER_ACTIVE, COLOR_PUZZLE_NO_PRONG_LAYER_INACTIVE, COLOR_PUZZLE_PRONG } from '../styles/palette'
@@ -6,7 +6,9 @@ import { COLOR_GAP_GREEN, COLOR_GAP_WHITE, COLOR_NO_PRONG, COLOR_PRONG, COLOR_PU
 export interface DrawOptions {
   prongs: number[]
   isPuzzle?: boolean
+  edit?: boolean
   illustrateGaps?: boolean
+  onChangeKey?: Dispatch<SetStateAction<number[]>>
 }
 
 const PI = Math.PI;
@@ -14,6 +16,7 @@ const PI = Math.PI;
 export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
   prongs,
   isPuzzle,
+  edit,
   illustrateGaps
 }: DrawOptions) => {
   const { puzzle, solved, activeLayer, guides, gapIllustrationMode } = useAutoSolver();
@@ -83,7 +86,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         ctx.arc(x, y, radius - (depth * 20 * scale), origin - prongWidth + offset, origin + prongWidth + offset);
         ctx.stroke();
 
-        if (isPuzzle && guides && i % 2 === 0) {
+        if ((isPuzzle || edit) && guides && i % 2 === 0) {
           ctx.beginPath();
           const x1 = x + radius * Math.cos(origin + offset) / 3;
           const y1 = y + radius * Math.sin(origin + offset) / 3;
@@ -159,7 +162,7 @@ export const useCanvasDraw = (canvasRef: React.RefObject<HTMLCanvasElement>, {
         renderProngs(set, i);
       })
     }
-  }, [canvasRef, prongMap, isPuzzle, puzzle, solved, activeLayer, guides, illustrateGaps, gapIllustrationMode]);
+  }, [canvasRef, prongMap, edit, isPuzzle, puzzle, solved, activeLayer, guides, illustrateGaps, gapIllustrationMode]);
 
   useEffect(() => {
     draw();

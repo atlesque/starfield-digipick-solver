@@ -2,14 +2,17 @@ import styles from './Key.module.scss'
 import { useCanvasManager } from '../../../hooks/useCanvasManager'
 import clsx from 'clsx'
 import { useAutoSolver } from '../../../hooks/useAutoSolver'
+import { Dispatch, SetStateAction } from 'react'
 
 interface KeyProps {
   prongs?: number[]
   isPuzzle?: boolean
   illustrateGaps?: boolean
   layer?: string
+  edit?: boolean
   rotation?: number
   active?: boolean
+  onChangeKey?: Dispatch<SetStateAction<number[]>>
   onClick?: (prongs: number[]) => void
 }
 export const Key = ({
@@ -17,14 +20,18 @@ export const Key = ({
   isPuzzle = false,
   illustrateGaps = false,
   rotation: _rotation = 0,
+  edit = false,
   layer,
   active = false,
-  onClick
+  onClick,
+  onChangeKey
 }: KeyProps) => {
   const { canvasRef, wrapperRef } = useCanvasManager({
     prongs,
     isPuzzle,
-    illustrateGaps
+    illustrateGaps,
+    edit,
+    onChangeKey
   });
 
   const { activeLayer, solved } = useAutoSolver();
@@ -36,7 +43,7 @@ export const Key = ({
       [styles.unused]: !isPuzzle && solved && activeLayer !== 'X' && layer === 'X'
     })}>
       <canvas ref={canvasRef} />
-      {!prongs.length && !isPuzzle && (
+      {!prongs.length && !isPuzzle && !edit && (
         <div className={styles.warning}>
           <span>!</span>
         </div>

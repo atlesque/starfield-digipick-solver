@@ -3,7 +3,7 @@ import { DigiKey } from '../../../types/DigiKey';
 import { MAX_PRONGS } from '../../../constants';
 import { rotateKey } from '../../../utils/rotateKey';
 
-const quickKeys: DigiKey[] = [
+export const quickKeys: DigiKey[] = [
   [1],
   [1, 3],
   [1, 3, 31],
@@ -13,7 +13,7 @@ const quickKeys: DigiKey[] = [
 ].map(prongs => ({ prongs }));
 
 export const useKeyPicker = () => {
-  const [keys, setKeys] = useState<DigiKey[]>(quickKeys);
+  const [keys, setKeys] = useState<DigiKey[]>([]);
   const [rotation, setRotation] = useState(0);
   const [prongQuantity, setProngQuantity] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
@@ -37,7 +37,7 @@ export const useKeyPicker = () => {
 
   useEffect(() => {
     if (prongQuantity === 0) {
-      setKeys(quickKeys.map(k => ({ prongs: rotateKey(k.prongs, rotation) } )));
+      setKeys([]);
       setOptions(o => o.length ? [] : o);
     }
 

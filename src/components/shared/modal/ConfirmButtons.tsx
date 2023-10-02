@@ -9,7 +9,7 @@ export const ConfirmButtons = ({
   return (
     <div className={styles.root}>
       <Button onClick={onCancel}>No</Button>
-      <Button primary onClick={onConfirm}>Yes</Button>
+      <Button primary onClick={onConfirm} autoFocus>Yes</Button>
     </div>
   )
 }
